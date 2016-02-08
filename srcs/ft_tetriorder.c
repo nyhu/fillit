@@ -12,13 +12,6 @@
 
 # include "header.h"
 
-static t_tetriminos			*ft_findbegin(t_tetriminos *begin)
-{
-	while (begin->prev)
-		begin = begin->prev;
-	return (begin);
-}
-
 static t_tetriminos 	*ft_followrightrabbit(t_tetriminos *rabbit, short *i, int *readymade)
 {
 	short			tmp;
@@ -39,17 +32,17 @@ static t_tetriminos 	*ft_followrightrabbit(t_tetriminos *rabbit, short *i, int *
 	return (rabbit);
 }
 
-t_tetriminos			*ft_tetriorder(t_tetriminos *turtle, int len, int stage)
+t_tetriminos			**ft_tetriorder(t_tetriminos **turtle, int len, int stage)
 {
 	short			i;
+	short			rabbit;
 	int				readymade;
-	t_tetriminos	*rabbit;
-	t_tetriminos	*test;
+	t_tetriminos	**test;
 
-	if (stage == len && ft_push_tetriminos(turtle))
-		return (ft_findbegin(turtle));
+	if (stage == len && ft_push_tetriminos(arrow[stage]))
+		return (arrow);
 	else if (stage == len)
-		return (ft_reorder(turtle));
+		return (ft_reorder(arrow, stage));
 	i = 0;
 	readymade = 0;
 	while (++i <= len - stage || rabbit)
@@ -58,21 +51,20 @@ t_tetriminos			*ft_tetriorder(t_tetriminos *turtle, int len, int stage)
 			if ((test = ft_tetriorder(turtle->next, len, stage + 1)))
 				return (test);
 		else
-			return (ft_reorder(turtle);
-		rabbit = ft_followrightrabbit(turtle, &i, &readymade);
-		ft_tetriswap(turtle, rabbit);
+			return (ft_reorder(arrow, stage));
+		rabbit = ft_followrightrabbit(arrow, stage, len, &readymade);
+		ft_tetriswap(arrow, stage, rabbit);
 		if (rabbit)
 			turtle = rabbit;
 	}
-	return (ft_reorder(turtle));
+	return (ft_reorder(arrow, stage));
 }
 
-void					ft_squ_lunch(t_tetriminos **arrow, int len)
+t_tetriminos			**ft_squ_lunch(t_tetriminos **arrow, int len)
 {
 	int				i;
 	int				j;
 	int				sq;
-	t_tetriminos	*result;
 
 	i = (len + 1) * 4;
 	j = 1;
@@ -86,49 +78,9 @@ void					ft_squ_lunch(t_tetriminos **arrow, int len)
 	while (sq < 16)
 	{
 		glb_sqr_dim(SET, sq);
-		if((result = ft_tetriorder(begin, len, 0)))
-			return (result);
+		if((arrow = ft_tetriorder(arrow, len, 0)))
+			return (arrow);
 		sq++;
 	}
 	return (NULL);
 }
-/*
-   0123
-   0132
-   0213
-   0231
-   0312
-   0321
-   1023
-   1032
-   1203
-   1230
-   1302
-   1320
-   2013
-
-
-
-   etage 0
-   0123
-   1023
-   2013
-   3012
-
-   etage 1
-   0123
-   0213
-   0312
-
-   1023
-   1203
-   1302
-
-   etage 2
-   0123
-   0132
-
-
-
-
-*/

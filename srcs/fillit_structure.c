@@ -77,7 +77,7 @@ void			fillit_structure(char *tab, int ret)
 		nb++;
 	}
 	glb_ground(SET, ft_create_square());
-	ft_squ_lunch(arrow, nb);
+	arrow = ft_squ_lunch(arrow, nb - 1);
 	ft_print_result(arrow);
 	free(array);
 	free(arrow);
