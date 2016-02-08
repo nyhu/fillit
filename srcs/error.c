@@ -10,17 +10,11 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "error.h"
+#include "header.h"
 
-int				error(int mode)
+void			ft_exit(int mode)
 {
-	static	int	error = 0;
-
-	if (mode & INIT)
-		return (error = 0);
-	if (mode & SET)
-		return (error = 1);
-	if (mode & GET)
-		return (error);
-	return (error);
+	if (mode)
+		ft_putstr_fd("error\n", 1);
+	exit(0);
 }

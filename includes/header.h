@@ -13,7 +13,9 @@
 #ifndef HEADER_H
 # define HEADER_H
 
+# define BUF 547
 # include <stdlib.h>
+# include <stdio.h>
 # include "tetriminos.h"
 # include "coordone.h"
 # include "square_result.h"

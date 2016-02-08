@@ -14,20 +14,19 @@
 # define TETRIMINOS_H
 
 # include <stdlib.h>
-# include "coordone.h"
 # include "error.h"
 
 typedef	struct s_tetriminos	t_tetriminos;
 struct				s_tetriminos
 {
-	t_tetriminos	*next;
-	t_tetriminos	*prev;
 	unsigned long	valu;
 	char			id;
 	int				type;
 	int				gap;
-	t_coordone		*dim;
-	t_coordone		*pos;
+	int				xd;
+	int				yd;
+	int				xp;
+	int				yp;
 };
 
 t_tetriminos		*create_tetriminos(int id);

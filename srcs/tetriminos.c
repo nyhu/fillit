@@ -12,20 +12,12 @@
 
 #include "tetriminos.h"
 
-t_tetriminos	*create_tetriminos(int id)
+void				create_tetriminos(t_tetriminos *piece, int id)
 {
-	t_tetriminos	*piece;
-	if (!(piece = (t_tetriminos*)malloc(sizeof(t_tetriminos))))
-		return (NULL);
-	if (!(piece->dim = create_coordone()) || !(piece->pos = create_coordone()))
-		return (NULL);
 	piece->id = id + 'A';
 	piece->valu = 0;
-	piece->pos->x = 8;
-	piece->pos->y = 8;
-	piece->next = NULL;
-	piece->prev = NULL;
-	return (piece);
+	piece->xp = 8;
+	piece->yp = 8;
 }
 
 void				tetris_define_type(t_tetriminos *elem)
@@ -33,6 +25,7 @@ void				tetris_define_type(t_tetriminos *elem)
 	int				type_max;
 	t_tetriminos	*tetris;
 	int				first;
+
 	type_max = 1;
 	tetris = elem->prev;
 	first = 1;
@@ -51,53 +44,12 @@ void				tetris_define_type(t_tetriminos *elem)
 		elem->type = type_max << 1;
 }
 
-int	tetris_free(t_tetriminos *elem)
-{
-	t_tetriminos	*save;
-
-	if (elem)
-	{
-		while (elem)
-		{
-			save = (elem)->next;
-			free(elem);
-			elem = save;
-		}
-	}
-	return (1);
-}
-
 void			finished_tetriminos(t_tetriminos *tetris)
 {
-	tetris->gap = (tetris->gap % 5) - tetris->pos->x; 
-	tetris->dim->x = tetris->dim->x - tetris->pos->x;
-	tetris->dim->y = tetris->dim->y - tetris->pos->y;
-	tetris->valu = tetris->valu >> (tetris->pos->x + (tetris->pos->y * 8));
-	tetris->pos->x = 0;
-	tetris->pos->y = 0;
+	tetris->gap = (tetris->gap % 5) - tetris->xp; 
+	tetris->xd = tetris->xd - tetris->xp;
+	tetris->yd = tetris->yd - tetris->yp;
+	tetris->valu = tetris->valu >> (tetris->xp + (tetris->yp * 8));
+	tetris->xp = 0;
+	tetris->yp = 0;
 }
-
-t_tetriminos	*tetris_push_front(t_tetriminos *begin, t_tetriminos *elem)
-{
-	t_tetriminos	*tmp;
-
-	if (begin && elem)
-	{
-		tmp = begin;
-		while (tmp->next)
-			tmp = tmp->next;
-		tmp->next = elem;
-		elem->prev = tmp;
-		tetris_define_type(elem);
-		return (begin);
-	}
-	else if (elem)
-	{
-		tetris_define_type(elem);
-		return (elem);
-	}
-	else
-		return (NULL);
-}
-
-

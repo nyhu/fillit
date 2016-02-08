@@ -10,29 +10,26 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "main.h"
+#include "header.h"
 
 int		main(int ac, char **av)
 {
-	int		err;
 	int		fd;
+	int		ret;
+	char	buf[BUF];
 
 	if (ac == 2)
-	{
-		if ((fd = open(av[1], O_RDONLY, S_IREAD)) != 1)
+		if ((fd = open(av[1], O_RDONLY, S_IREAD)) > 0)
 		{
-			err = fillit_structure(fd);
-			if (err == -1)
-				ft_putstr_fd("error\n", 2);
-			else if (err == -2)
-				ft_putstr_fd("error\n", 2);
-		}
-		else
-			ft_putstr_fd("error\n", 2);
-	}
-	else if (ac == 1)
-		ft_putstr_fd("error\n", 2);
-	else
-		ft_putstr_fd("error\n", 2);
+			if ((ret = read(fd, tab, BUF)))
+				if (!((ret % 21) - 1))
+				{
+					tab[ret] = '\0';
+					close(fd);
+					fillit_structure(tab, ret);
+				}
+			close(fd);
+		}	
+	ft_putstr_fd("error\n", 1);
 	return (0);
 }

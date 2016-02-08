@@ -19,60 +19,68 @@ static int		my_free(void *addr)
 	return (1);
 }
 
-t_tetriminos	*get_next_piece(int fd, int id)
+int				get_next_piece(char *tab, t_tetriminos *tetris, int id)
 {
-	t_tetriminos	*tetris;
-	int				oct_lu;
-	char			str[21];
+	int		dieses;
 
-	if (!(tetris = create_tetriminos(id)) && error(SET))
-		return (NULL);
-	if ((oct_lu = read(fd, str, 20)) != 20 && error(SET) && my_free(tetris) + 1)
-		return (NULL);
-	oct_lu = 0;
-	search_the_diese(str, tetris, &oct_lu, (tetris->gap = first_case(str)));
-	if ((tetris->id == 0 || oct_lu != 4 || style_alive(str))
-	&& error(SET) && my_free(tetris))
-		return (NULL);
+	create_tetriminos(tetris, id);
+	dieses = 0;
+	if ((tetris->gap = first_case(str)) < 0)
+		return (0);
+	search_the_diese(tab, tetris, &dieses, tetris->gap);
+	if (tetris->id == 0 || dieses != 4 || style_alive(str))
+		return (0);
 	finished_tetriminos(tetris);
-	return (tetris);
+	return (1);
 }
 
-t_tetriminos	*get_the_pieces(int fd)
+void			get_the_pieces(char *tab, int nb, int ret, t_tetriminos *array)
 {
-	t_tetriminos	*begin;
 	int				i;
-	char			c;
-	int				oct_lu;
 
-	i = 0;
-	oct_lu = 1;
-	c = '\n';
-	begin = NULL;
-	while (i < 26 && oct_lu && c == '\n')
+	i = 20;
+	while (i < ret && tab[i] == '\n')
 	{
-		begin = tetris_push_front(begin, get_next_piece(fd, i));
-		oct_lu = read(fd, &c, 1);
-		if (oct_lu && c != '\n')
-			error(SET);
-		i++;
+		tab[i] == '\0';
+		i += 21;
 	}
-	if (error(GET) && tetris_free(begin))
-		return (NULL);
-	return (begin);
+	if (i < ret || !(array = (t_tetriminos *)malloc(sizeof(t_tetriminos) * nb)))
+		ft_error(1);
+	i = 0;
+	nb = 0;
+	while (tab[i] && i < ret)
+	{
+		if (!(get_next_piece(tab + i, &(array[nb]), nb)))
+		{
+			free(array);
+			ft_error(1);
+		}
+		i += 21;
+		nb++;
+	}
 }
 
-int				fillit_structure(int fd)
+void			fillit_structure(char *tab, int ret)
 {
-	t_tetriminos	*first_tetris;
+	t_tetriminos	*array;
+	t_tetriminos	*arrow;
+	int				nb;
 
-	error(INIT);
-	first_tetris = get_the_pieces(fd);
-	if (!first_tetris)
-		return (-1);
-//	print_all_tetris(first_tetris);
+	nb = (ret + 1) / 21;
+	get_the_pieces(tab, nb, ret, array)
+	if (!(arrow = (t_tetriminos **)malloc(sizeof(t_tetriminos *) * nb)) 
+		&& my_free(array))
+		ft_exit(1);
+	nb = 0;
+	while (nb < ((ret + 1) / 21))
+	{
+		arrow[nb] = &(array[nb]);
+		nb++;
+	}
 	glb_ground(SET, ft_create_square());
-	first_tetris = ft_squ_lunch(first_tetris, ft_tetrilen(first_tetris));
-	ft_print_result(first_tetris);
-	return (0);
+	ft_squ_lunch(arrow, nb);
+	ft_print_result(arrow);
+	free(array);
+	free(arrow);
+	ft_exit(0);
 }

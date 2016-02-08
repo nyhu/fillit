@@ -19,14 +19,14 @@ void			actual_mini_maxi(t_tetriminos *tetris, int i)
 
 	x = i % 5;
 	y = i / 5;
-	if (x < tetris->pos->x)
-		tetris->pos->x = x;
-	if (y < tetris->pos->y)
-		tetris->pos->y = y;
-	if (x > tetris->dim->x)
-		tetris->dim->x = x;
-	if (y > tetris->dim->y)
-		tetris->dim->y = y;
+	if (x < tetris->xp)
+		tetris->xp = x;
+	if (y < tetris->yp)
+		tetris->yp = y;
+	if (x > tetris->xd)
+		tetris->xd = x;
+	if (y > tetris->yd)
+		tetris->yd = y;
 }
 
 int				first_case(char *str)
@@ -34,7 +34,7 @@ int				first_case(char *str)
 	int	i;
 
 	i = 0;
-	while (i < 20)
+	while (i < 14)
 	{
 		if (i % 5 == 4 && str[i] != '\n')
 			return (-1);
@@ -44,7 +44,7 @@ int				first_case(char *str)
 			return (-1);
 		i++;
 	}
-	return (i);
+	return (-1);
 }
 
 void			search_the_diese(char *piece, t_tetriminos *tetris
@@ -59,8 +59,6 @@ void			search_the_diese(char *piece, t_tetriminos *tetris
 		tetris->valu += unite << (i % 5 + ((i / 5) * 8));
 		*nb += 1;
 		actual_mini_maxi(tetris, i);
-		if (i - 5 >= 0)
-			search_the_diese(piece, tetris, nb, i - 5);
 		if ((i - 1) % 5 != 4 && (i - 1) >= 0)
 			search_the_diese(piece, tetris, nb, i - 1);
 		if ((i + 1) % 5 != 0 && (i + 1) % 5 != 4 && (i + 1) < 20)
