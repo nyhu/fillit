@@ -6,7 +6,7 @@
 /*   By: fjanoty <fjanoty@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/03 22:03:34 by fjanoty           #+#    #+#             */
-/*   Updated: 2016/02/05 11:12:09 by fjanoty          ###   ########.fr       */
+/*   Updated: 2016/02/07 03:53:55 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,72 +15,64 @@
 #include "header.h"
 #include "debug.h"
 
-char	*ft_init_str_result()
+char	*ft_init_str_result(int len)
 {
 	char	*result;
-	int		len;
+	int		i;
 
-	len = glb_sqr_dim(GET, 0);
-	len = len * (len + 1);
-dprintf(1, "len:%d\n", len);
-	if (!(result = (char*)malloc(sizeof(char) * (len + 1))))
+	i = 0;
+	if (!(result = (char*)malloc(sizeof(char) * (len * (len + 1) + 1))))
 		return (NULL);
-	result[len] = '\0';
-	return (result);
-}
-
-int	indice_input(t_coordone *pos, t_coordone *indice,int len)
-{
-	return ((indice->x + pos->x) + ((indice->y + pos->y) * len + 1));
-}
-
-char	*ft_get_result(t_coordone *pos, t_coordone *indice, t_tetriminos *elem, int len)
-{
-	static	char		*result = 0;
-	static	int			init = 1;
-	unsigned	long	unite;
-static	int debug = 0;
-
-dprintf(1, "ft_get_resul:%d\n", ++debug);
-dprintf(1, "init:%d\n", init);
-
-	if (init && !(init = 0))
-		result = ft_init_str_result();
-	unite = 1;
-	while (indice->y < 4)
+	while (i < len * (len + 1))
 	{
-		indice->x = 0;
-		while (indice->x < 4)
-		{
-			if (elem->valu & unite << (indice->x + (8 * indice->y)))
-				result[indice_input(pos, indice, len)] = elem->id;
-			(indice->x)++;
-		}
-		(indice->y)++;
+		if (i % (len + 1) == len)
+			result[i] = '\n';
+		else
+			result[i] = '.';
+		i++;
 	}
+	result[i] = '\0';
 	return (result);
+}
+
+void	ft_add_strtetri(t_tetriminos *elem, t_coordone *pos, char *str, int len)
+{
+	int	i;
+	int	j;
+
+	j = 0;
+	while (j < 4)
+	{
+		i = 0;
+		while (i < 4)
+		{
+			if (elem->valu & (1 << (i + (8 * j))))
+				str[i + pos->x + ((len + 1) * j + pos->y)] = elem->id;
+			i++;
+		}
+		j++;
+	}
 }
 
 void	ft_print_result(t_tetriminos *begin)
 {
 	t_coordone			*pos;
-	t_coordone			*indice;
 	int					len;
 	char	*result;
 
 print_all_tetris(begin);
-if(!begin)
-dprintf(1, "ON T'AS NICKER\n");
-dprintf(1, "len:%d\n", ft_tetrilen(begin));
+print_ground(glb_ground(GET, 0));
+dprintf(1, "len_tetri:%d\n", ft_tetrilen(begin) + 1);
 	pos = create_coordone();
-	indice = create_coordone();
-	len= glb_sqr_dim(GET, 0);
+	len = glb_sqr_dim(GET, 0) - 1;
+	result = ft_init_str_result(len);
 	while (begin)
 	{
+dprintf(1, "print_piece:%c\n", begin->id);
 		copy_coordone(pos, begin->pos);
 		ft_resting_posx(begin, 0);
-		ft_resting_posx(begin, 0);
-		result = ft_get_result(pos, indice, begin, len);
+		ft_resting_posy(begin, 0);
+		ft_add_strtetri(begin, pos, result, len);
 		begin = begin->next;
 	}
 	ft_putstr(result);
