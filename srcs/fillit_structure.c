@@ -12,6 +12,7 @@
 
 #include "header.h"
 #include "structure.h"
+#include "glb.h"
 
 static int		my_free(void *addr)
 {
@@ -25,10 +26,10 @@ int				get_next_piece(char *tab, t_tetriminos *tetris, int id)
 
 	create_tetriminos(tetris, id);
 	dieses = 0;
-	if ((tetris->gap = first_case(str)) < 0)
+	if ((tetris->gap = first_case(tab)) < 0)
 		return (0);
 	search_the_diese(tab, tetris, &dieses, tetris->gap);
-	if (tetris->id == 0 || dieses != 4 || style_alive(str))
+	if (tetris->id == 0 || dieses != 4 || style_alive(tab))
 		return (0);
 	finished_tetriminos(tetris);
 	return (1);
@@ -40,12 +41,9 @@ void			get_the_pieces(char *tab, int nb, int ret, t_tetriminos *array)
 
 	i = 20;
 	while (i < ret && tab[i] == '\n')
-	{
-		tab[i] == '\0';
 		i += 21;
-	}
 	if (i < ret || !(array = (t_tetriminos *)malloc(sizeof(t_tetriminos) * nb)))
-		ft_error(1);
+		ft_exit(1);
 	i = 0;
 	nb = 0;
 	while (tab[i] && i < ret)
@@ -53,7 +51,7 @@ void			get_the_pieces(char *tab, int nb, int ret, t_tetriminos *array)
 		if (!(get_next_piece(tab + i, &(array[nb]), nb)))
 		{
 			free(array);
-			ft_error(1);
+			ft_exit(1);
 		}
 		i += 21;
 		nb++;
@@ -63,18 +61,18 @@ void			get_the_pieces(char *tab, int nb, int ret, t_tetriminos *array)
 void			fillit_structure(char *tab, int ret)
 {
 	t_tetriminos	*array;
-	t_tetriminos	*arrow;
+	t_tetriminos	**arrow;
 	int				nb;
 
 	nb = (ret + 1) / 21;
-	get_the_pieces(tab, nb, ret, array)
+	get_the_pieces(tab, nb, ret, array);
 	if (!(arrow = (t_tetriminos **)malloc(sizeof(t_tetriminos *) * nb)) 
 		&& my_free(array))
 		ft_exit(1);
 	nb = 0;
 	while (nb < ((ret + 1) / 21))
 	{
-		arrow[nb] = &(array[nb]);
+		arrow[nb] = array + (nb * sizeof(t_tetriminos));
 		nb++;
 	}
 	glb_ground(SET, ft_create_square());

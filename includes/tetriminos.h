@@ -29,10 +29,8 @@ struct				s_tetriminos
 	int				yp;
 };
 
-t_tetriminos		*create_tetriminos(int id);
+void				create_tetriminos(t_tetriminos *tetris, int id);
 void				tetris_define_type(t_tetriminos *elem);
-int					tetris_free(t_tetriminos *elem);
-t_tetriminos		*tetris_push_front(t_tetriminos *begin, t_tetriminos *elem);
 void				finished_tetriminos(t_tetriminos *tetris);
 
 #endif

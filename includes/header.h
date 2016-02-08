@@ -20,6 +20,7 @@
 # include "coordone.h"
 # include "square_result.h"
 
+void				ft_exit(int mode);
 t_sqare				*glb_ground(int mode, t_sqare *value);
 t_sqare				*ft_create_square(void);
 void				ft_remouve_tetris(t_tetriminos *t);

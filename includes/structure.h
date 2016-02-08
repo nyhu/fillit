@@ -21,7 +21,7 @@
 # include "filling.h"
 # include "debug.h"
 
-int				fillit_structure(int fd);
-t_tetriminos	*get_next_piece(int fd, int id);
-t_tetriminos	*get_the_pieces(int fd);
+void			fillit_structure(char *tab, int ret);
+int				get_next_piece(char *tab, t_tetriminos *tetris, int id);
+void			get_the_pieces(char *tab, int nb, int ret, t_tetriminos *array);
 #endif
