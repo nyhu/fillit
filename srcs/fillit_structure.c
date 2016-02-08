@@ -6,7 +6,7 @@
 /*   By: fjanoty <fjanoty@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/05 18:23:53 by fjanoty           #+#    #+#             */
-/*   Updated: 2016/02/05 08:31:28 by fjanoty          ###   ########.fr       */
+/*   Updated: 2016/02/08 17:41:21 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int				get_next_piece(char *tab, t_tetriminos *tetris, int id)
 	return (1);
 }
 
-void			get_the_pieces(char *tab, int nb, int ret, t_tetriminos *array)
+t_tetriminos	*get_the_pieces(char *tab, int nb, int ret, t_tetriminos *array)
 {
 	int				i;
 
@@ -57,6 +57,7 @@ void			get_the_pieces(char *tab, int nb, int ret, t_tetriminos *array)
 		i += 21;
 		nb++;
 	}
+	return (array);
 }
 
 void			fillit_structure(char *tab, int ret)
@@ -65,8 +66,9 @@ void			fillit_structure(char *tab, int ret)
 	t_tetriminos	**arrow;
 	int				nb;
 
+	array = NULL;
 	nb = (ret + 1) / 21;
-	get_the_pieces(tab, nb, ret, array);
+	array = get_the_pieces(tab, nb, ret, array);
 	if (!(arrow = (t_tetriminos **)malloc(sizeof(t_tetriminos *) * nb)) 
 		&& my_free(array))
 		ft_exit(1);

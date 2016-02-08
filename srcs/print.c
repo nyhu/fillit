@@ -6,7 +6,7 @@
 /*   By: fjanoty <fjanoty@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/03 22:03:34 by fjanoty           #+#    #+#             */
-/*   Updated: 2016/02/07 03:53:55 by fjanoty          ###   ########.fr       */
+/*   Updated: 2016/02/08 17:23:24 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,29 +54,26 @@ void	ft_add_strtetri(t_tetriminos *elem, t_coordone *pos, char *str, int len)
 	}
 }
 
-void	ft_print_result(t_tetriminos *begin)
+void	ft_print_result(t_tetriminos **arrow, int size)
 {
 	t_coordone			*pos;
 	int					len;
-	char	*result;
+	int					i;
+	char				*result;
 
-print_all_tetris(begin);
-print_ground(glb_ground(GET, 0));
-dprintf(1, "len_tetri:%d\n", ft_tetrilen(begin) + 1);
 	pos = create_coordone();
 	len = glb_sqr_dim(GET, 0) - 1;
 	result = ft_init_str_result(len);
-	while (begin)
+	i = 0;
+	while (i < size)
 	{
-dprintf(1, "print_piece:%c\n", begin->id);
 		copy_coordone(pos, begin->pos);
-		ft_resting_posx(begin, 0);
-		ft_resting_posy(begin, 0);
-		ft_add_strtetri(begin, pos, result, len);
-		begin = begin->next;
+		ft_resting_posx(arrow[i], 0);
+		ft_resting_posy(arrow[i], 0);
+		ft_add_strtetri(arrow[i], pos, result, len);
+		i++;
 	}
 	ft_putstr(result);
-//printf("###############################################:	%s\n", result);
 	free(result);
 	free(pos);
 }
