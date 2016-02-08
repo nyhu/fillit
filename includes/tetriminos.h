@@ -30,7 +30,7 @@ struct				s_tetriminos
 };
 
 void				create_tetriminos(t_tetriminos *tetris, int id);
-void				tetris_define_type(t_tetriminos *elem);
+void				tetris_define_type(t_tetriminos *array, int nb);
 void				finished_tetriminos(t_tetriminos *tetris);
 
 #endif

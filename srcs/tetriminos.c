@@ -20,28 +20,31 @@ void				create_tetriminos(t_tetriminos *piece, int id)
 	piece->yp = 8;
 }
 
-void				tetris_define_type(t_tetriminos *elem)
+void				tetris_define_type(t_tetriminos *array, int nb)
 {
 	int				type_max;
 	t_tetriminos	*tetris;
 	int				first;
 
 	type_max = 1;
-	tetris = elem->prev;
+	tetris = &(array[nb]);
 	first = 1;
-	while (tetris && tetris->valu != elem->valu)
+	nb--;
+	while (nb)
 	{
 		first = 0;
-		if (tetris->type > type_max)
-			type_max = tetris->type;
-		tetris = tetris->prev;
+		if ((array[nb]).type > type_max)
+			type_max = (array[nb]).type;
+		if ((array[nb]).valu = tetris->valu)
+			break;
+		nb--;
 	}
-	if (tetris)
-		elem->type = tetris->type;
+	if (nb)
+		tetris->type = (array[nb]).type;
 	else if (first)
-		elem->type = type_max;
+		tetris->type = type_max;
 	else
-		elem->type = type_max << 1;
+		tetris->type = type_max << 1;
 }
 
 void			finished_tetriminos(t_tetriminos *tetris)

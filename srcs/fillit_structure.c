@@ -53,6 +53,7 @@ void			get_the_pieces(char *tab, int nb, int ret, t_tetriminos *array)
 			free(array);
 			ft_exit(1);
 		}
+		tetris_define_type(array, nb);
 		i += 21;
 		nb++;
 	}

@@ -67,7 +67,7 @@ t_tetriminos			*ft_tetriorder(t_tetriminos *turtle, int len, int stage)
 	return (ft_reorder(turtle));
 }
 
-t_tetriminos			*ft_squ_lunch(t_tetriminos *begin, int len)
+void					ft_squ_lunch(t_tetriminos **arrow, int len)
 {
 	int				i;
 	int				j;
