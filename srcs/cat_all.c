@@ -6,137 +6,141 @@
 /*   By: fjanoty <fjanoty@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/03 22:11:42 by fjanoty           #+#    #+#             */
-/*   Updated: 2016/02/05 10:46:47 by fjanoty          ###   ########.fr       */
+/*   Updated: 2016/02/11 06:31:20 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "add_rm_tetri.h"
+#include "debug.h"
+#include <stdio.h>
 
-unsigned	long	ft_working_window(t_sqare *gr, t_coordone *pos)
+/*area[x][y]*/
+unsigned	long	ft_working_window(t_sqare *gr, int x, int y)
 {
 	unsigned	long	mh;
 	unsigned	long	mv;
 	unsigned	long	ecr;
 
-	mh = get_horizontal_mask(pos->x);
-	mv = get_horizontal_mask(pos->y);
-	ecr = ((gr->area[0][0] & ~mv & ~mh) >> (pos->x + (8 * pos->y)));
-	ecr |= (((gr->area[0][1] & ~mv & mh) >> pos->x) << (8 * (8 - pos->y)));
-	ecr |= (((gr->area[1][0] & mv & ~mh) << (8 - pos->x)) >> (8 * (pos->y)));
-	ecr |= ((gr->area[1][1] & mv & mh) << ((8 - pos->x) + (8 * (8 - pos->y))));
+	mh = get_vertical_mask(x);
+	mv = get_horizontal_mask(y);
+	ecr = ((gr->area[0][0] & ~mv & ~mh) >> (x + (8 * y)));
+	ecr |= (((gr->area[0][1] & mv & ~mh) >> x) << (8 * (8 - y)));
+	ecr |= (((gr->area[1][0] & ~mv & mh) << (8 - x)) >> (8 * y));
+	ecr |= ((gr->area[1][1] & mv & mh) << ((8 - x) + (8 * (8 - y))));
 	return (ecr);
 }
 
-
-unsigned	long	*ft_init_windows(t_coordone *pos, int stage)
+void	ft_init_windows(unsigned long *windows, int stage)
 {
 	int					i;
-	unsigned	long	*windows;
 	t_sqare				*ground;
 	int					nb_win;
+	int					x;
+	int					y;
 
 	ground = glb_ground(GET, 0);
 	nb_win = glb_nb_windows(GET, 0);
-	pos = create_coordone_y(stage * 4);
-	windows = (unsigned long *) malloc(sizeof(unsigned long) * 3);
 	i = 0;
+	y = stage * 4;
 	while (i < nb_win)
 	{
-		pos->x = (i * 4);
-		windows[i] = ft_working_window(ground, pos);
+		x = (i * 4);
+		windows[i] = ft_working_window(ground, x, y);
 		i++;
 	}
-	free(pos);
-	return (windows);
 }
 
-int		ft_set_tetris(t_tetriminos *t, t_coordone *pos)
+int		ft_set_tetris(t_tetriminos *t, int x, int y)
 {
 	unsigned	long	mh;
 	unsigned	long	mv;
 	t_sqare				*gr;
 
 	gr = glb_ground(GET, 0);
-	pos->x *= 4;
-	pos->y *= 4;
-	mv = get_vertical_mask(pos->x);
-	mh = get_horizontal_mask(pos->y);
-	gr->area[0][0] |= (t->valu & ~mh & ~mv) >> (pos->x + (8 * pos->y));
-	gr->area[0][1] |= ((t->valu & ~mh & mv) >> pos->x) << (8 * (8 - pos->y));
-	gr->area[1][0] |= ((t->valu & mh & ~mv) << (8 - pos->x)) >> (8 * pos->y);
-	gr->area[1][1] |= (t->valu & mh & mv) << (8 - pos->x + (8 * (8 - pos->y)));
+	x *= 4;
+	y *= 4;
+	mv = get_vertical_mask(8 - x);
+	mh = get_horizontal_mask(8 - y);
+	gr->area[0][0] ^= (t->valu & mv & mh) << (x + (8 * y));
+	gr->area[0][1] ^= ((t->valu & mv & ~mh) << x) >> (8 * (8 - y ));
+	gr->area[1][0] ^= ((t->valu & ~mv & mh) >> (8 - x)) << (8 * y);
+	gr->area[1][1] ^= (t->valu & ~mv & ~mh) >> (8 - x + (8 * (8 - y)));
 	return (1);
 }
 
-void	ft_remouve_tetris(t_tetriminos *t)
+void	ft_remouve_tetris(t_tetriminos *tetri)
 {
-	unsigned	long	mh;
-	unsigned	long	mv;
-	t_coordone			*p;
-	t_sqare				*gr;
-
-	p = create_coordone();
-
-	gr = glb_ground(GET, 0);
-	p->x = (t->pos->x / 4) * 4;
-	p->y = (t->pos->y / 4) * 4;
-	mv = get_vertical_mask(p->x);
-	mh = get_horizontal_mask(p->y);
-	gr->area[0][0] &= ~((t->valu & ~mh & ~mv) >> (p->x + (8 * p->y)));
-	gr->area[0][1] &= ~(((t->valu & ~mh & mv) >> p->x) << (8 * (8 - p->y)));
-	gr->area[1][0] &= ~(((t->valu & mh & ~mv) << (8 - p->x)) >> (8 * p->y));
-	gr->area[1][1] &= ~((t->valu & mh & mv) << (8 - p->x + (8 * (8 - p->y))));
-	free(p);
+	ft_set_tetris(tetri, tetri->ecr->x, tetri->ecr->y);
+	ft_resting_posx(tetri);
+	ft_resting_posy(tetri);
+	tetri->ecr->x = 0;
+	tetri->ecr->y = 0;
 }
 
-static	int		my_free(t_coordone *indice)
+int		ft_last_loop(t_tetriminos *elem, int dim, unsigned long *windows)
 {
-	free(indice);
-	return (1);
-}
-
-int		ft_last_loop(t_tetriminos *elem, t_coordone *indice, int dim
-		, unsigned long *windows)
-{
-	while ((X < 7 - DIM_X) && X + (4 * IND_X) < dim - DIM_X)
+	while ((X < 8 - DIM_X) && X + (4 * ECR_X) < dim - DIM_X)
 	{
-		if (((elem->valu & windows[IND_X]) == 0)
-			&& ft_set_tetris(elem, indice) && my_free(indice))
+		if ((elem->valu & windows[ECR_X]) == 0)
+		{
+			ft_set_tetris(elem, ECR_X, ECR_Y);
 			return (1);
+		}
 		elem->valu <<= 1;
 		(X)++;
+//dprintf(1, "CHANGEMANE DE COLONE x:%d y:%d ecrx:%d ecry:%d\n", X, Y, ECR_X, ECR_Y);
 	}
-	ft_resting_posx(elem, (IND_X)++);
+//dprintf(1, "=========================X:%d  max:%d\n",  X + (4 * ECR_X), dim - DIM_X);
+	(ECR_X)++;
+	ft_resting_posx(elem);
 	return (0);
 }
 
 int	ft_push_tetriminos(t_tetriminos *elem)
 {
-	t_coordone			*indice;
-	unsigned	long	*windows;
+	unsigned	long	windows[3];
 	int					nb_windows;
 	int					dim;
 
-	indice = create_coordone();
 	nb_windows = glb_nb_windows(GET, 0);
 	dim = glb_sqr_dim(GET, 0);
-	windows = ft_init_windows(0, IND_Y);
-	while (IND_Y < nb_windows)
+	ECR_X = 0;
+//dprintf(1, "ecr_x:%d	ecr_y:%d\n", ECR_X, ECR_Y);
+//dprintf(1, "nb_windows:%d\n", nb_windows);
+	while (ECR_Y < nb_windows)
 	{
-		while ((Y < 8 - DIM_Y) && Y + (4 * IND_Y) < dim - DIM_Y)
+		ft_init_windows(windows, ECR_Y);
+		while ((Y < 8 - DIM_Y) && Y + (4 * ECR_Y) < dim - DIM_Y)
 		{
-			while(IND_X < nb_windows)
-				if (ft_last_loop(elem, indice, dim, windows))
+//dprintf(1, "		ecr	X:%d\n", ECR_X);
+			while(ECR_X < nb_windows)
+			{
+				if (ft_last_loop(elem, dim, windows))
 					return (1);
+			}
+			ECR_X = 0;
+	//		ft_resting_posx(elem);
 			elem->valu <<= 8;
 			(Y)++;
+//dprintf(1, "CHANGEMANE DE LIIIIIGNE x:%d y:%d ecrx:%d ecry:%d\n", X, Y, ECR_X, ECR_Y);
 		}
-		ft_resting_posy(elem, (IND_Y)++);
+		(ECR_Y)++;
 	}
-	free(windows);
-	free(indice);
+	ft_resting_posy(elem);
+	ft_resting_posx(elem);
+	ECR_Y = 0;
+	ECR_X = 0;
+//dprintf(1, "*** FAIL:%c: ***\n", elem->id);
 	return (0);
 }
+
+/*
+ *	Il faut retracer le coportement de ft_push_tetriminos 
+ *		savoir sur combien il se deplace par fenetre
+ *		qu'est ce qu'il se passe quand il dit non et donc pourquoi
+ *		est-ce qu'il y a bien un reset
+ *		pourquoi la taille minimal de fenetre est plus que une
+ */
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
@@ -145,7 +149,7 @@ int	ft_push_tetriminos(t_tetriminos *elem)
 /*   By: fjanoty <fjanoty@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/05 18:23:53 by fjanoty           #+#    #+#             */
-/*   Updated: 2016/02/05 03:53:30 by fjanoty          ###   ########.fr       */
+/*   Updated: 2016/02/10 20:12:59 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,10 +177,10 @@ t_coordone		*create_coordone_y(int y)
 	return (position);
 }
 
-void			copy_coordone(t_coordone *pos_dst, t_coordone *pos_src)
+void			copy_coordone(t_coordone *pos_dst, t_coordone *pos_src1, t_coordone *pos_src2)
 {
-	pos_dst->x = pos_src->x;
-	pos_dst->y = pos_src->y;
+	pos_dst->x = pos_src1->x + (pos_src2->x * 4);
+	pos_dst->y = pos_src1->y + (pos_src2->y * 4);
 }
 /* ************************************************************************** */
 /*                                                                            */
@@ -186,11 +190,60 @@ void			copy_coordone(t_coordone *pos_dst, t_coordone *pos_src)
 /*   By: fjanoty <fjanoty@student.fr>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/27 06:46:52 by fjanoty           #+#    #+#             */
-/*   Updated: 2016/02/04 20:16:21 by tboos            ###   ########.fr       */
+/*   Updated: 2016/02/10 20:37:01 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "debug.h"
+
+void	print_working_windows(unsigned long *windows)
+{
+	int	nb_windows;
+	int	j;
+	t_tetriminos	*tet;
+
+	j = 0;
+	tet = create_tetriminos(0);
+	nb_windows = glb_nb_windows(GET, 0);
+	while (j < nb_windows)
+	{
+		dprintf(1, "windows:%d", j);
+		tet->valu = windows[j];
+		print_tetris(tet);
+		j++;
+	}
+	dprintf(1, "\n");
+	free(tet);
+}
+
+void	print_ground(t_sqare *sqr)
+{
+	int	i;
+	int	j;
+	unsigned long unite;
+
+	j = 0;
+	unite = 1;
+	dprintf(1, "len_sqr:%d\n", sqr->dim);
+	while (j < 16)
+	{
+		i = 0;
+		while (i < 16)
+		{
+			if (i == 8)
+				dprintf(1, " | ");
+			if (sqr->area[i / 8][j / 8] & (unite << ((i % 8) + (8 * (j % 8)))))
+				dprintf(1, "#");
+			else
+				dprintf(1, ".");
+			i++;
+		}
+		dprintf(1, "\n");
+		j++;
+		if (j == 8)
+			dprintf(1, "--------   --------\n");
+	}
+}
 
 void	print_tetris(t_tetriminos *piece)
 {
@@ -198,40 +251,41 @@ void	print_tetris(t_tetriminos *piece)
 	int					j;
 	unsigned	long	unite;
 
-	printf("\n");
+	dprintf(1, "\n");
 	unite = 1;
 	j = 0;
-	while (j < 4)
+	while (j < 8)
 	{
 		i = 0;
-		while (i < 4)
+		while (i < 8)
 		{
 			if (piece->valu & (unite << (j * 8 + i)))
-				printf("#");
+				dprintf(1, "#");
 			else
-				printf(".");
+				dprintf(1, ".");
 			i++;
 		}
-		printf("\n");
+		dprintf(1, "\n");
 		j++;
 	}
 }
 
 void	print_coordone(t_coordone *pos, char *name)
 {
-	printf("%s	: x:%d\n", name, pos->x);
-	printf("%s	: y:%d\n", name, pos->y);
+	dprintf(1, "%s: x:%d ", name, pos->x);
+	dprintf(1, "%s: y:%d\n", name, pos->y);
 }
 
 void	describe_tetris(t_tetriminos *tetris)
 {
 	print_tetris(tetris);
-	printf("valu		:%ld\n", (long)tetris->valu);
-	printf("id		:%c\n", tetris->id);
-	printf("type		:%d\n", tetris->type);
-	printf("gap		:%d\n", tetris->gap);
-	print_coordone(tetris->dim, "	dim");
-	print_coordone(tetris->pos, "	pos");
+	dprintf(1, "valu :%ld   ", (long)tetris->valu);
+	dprintf(1, "id   :%c   ", tetris->id);
+	dprintf(1, "type :%d   ", tetris->type);
+	dprintf(1, "gap  :%d\n", tetris->gap);
+	print_coordone(tetris->dim, " dim");
+	print_coordone(tetris->pos, " pos");
+	print_coordone(tetris->ecr, " ecr");
 }
 
 void	print_all_tetris(t_tetriminos *tetris)
@@ -365,7 +419,7 @@ int				style_alive(char *str)
 /*   By: fjanoty <fjanoty@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/05 18:23:53 by fjanoty           #+#    #+#             */
-/*   Updated: 2016/02/05 08:31:28 by fjanoty          ###   ########.fr       */
+/*   Updated: 2016/02/06 20:09:23 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -429,7 +483,7 @@ int				fillit_structure(int fd)
 	first_tetris = get_the_pieces(fd);
 	if (!first_tetris)
 		return (-1);
-//	print_all_tetris(first_tetris);
+//print_all_tetris(first_tetris);
 	glb_ground(SET, ft_create_square());
 	first_tetris = ft_squ_lunch(first_tetris, ft_tetrilen(first_tetris));
 	ft_print_result(first_tetris);
@@ -508,7 +562,7 @@ void		ft_tetriswap(t_tetriminos *r1, t_tetriminos *r2)
 /*   By: tboos <marvin@42.fr> 	                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/02 21:44:00 by tboos             #+#    #+#             */
-/*   Updated: 2016/02/04 20:20:12 by tboos            ###   ########.fr       */
+/*   Updated: 2016/02/05 21:24:26 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -534,12 +588,11 @@ int				ft_tetrilen(t_tetriminos *begin)
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/03 18:14:15 by tboos             #+#    #+#             */
-/*   Updated: 2016/02/05 09:10:21 by fjanoty          ###   ########.fr       */
+/*   Updated: 2016/02/11 01:20:43 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "header.h"
-#include <stdio.h>
 
 static t_tetriminos			*ft_findbegin(t_tetriminos *begin)
 {
@@ -553,12 +606,12 @@ static t_tetriminos 	*ft_followrightrabbit(t_tetriminos *rabbit, short *i, int *
 	short			tmp;
 
 	tmp = *i;
-	while (tmp)
+	while (tmp && rabbit)
 	{
 		rabbit = rabbit->next;
 		tmp--;
 	}
-	while (rabbit && !(*readymade & rabbit->type))
+	while (rabbit && (*readymade & rabbit->type))
 	{
 		rabbit = rabbit->next;
 		(*i)++;
@@ -568,39 +621,53 @@ static t_tetriminos 	*ft_followrightrabbit(t_tetriminos *rabbit, short *i, int *
 	return (rabbit);
 }
 
+static	t_tetriminos	*ft_incrx_tetris(t_tetriminos *tetris)
+{
+	ft_remouve_tetris(tetris);
+	tetris->valu <<= 1;
+	(tetris->pos->x)++;
+	return (tetris);
+}
+
 t_tetriminos			*ft_tetriorder(t_tetriminos *turtle, int len, int stage)
 {
 	short			i;
 	int				readymade;
 	t_tetriminos	*rabbit;
 	t_tetriminos	*test;
-int	debug = 0;
+	int				ok;
 
+	ok = 1;
 	if (stage == len && ft_push_tetriminos(turtle))
 		return (ft_findbegin(turtle));
 	else if (stage == len)
 		return (ft_reorder(turtle));
-	i = 2;
+	i = 0;
 	readymade = 0;
-dprintf(1, "tetri_order_the_first: %d\n", ++debug);
-	while (++i <= len - stage)
+	while (++i <= len - stage || rabbit)
 	{
-dprintf(1, "tetri_order_bcl: %d\n", ++debug);
-		if ((test = ft_tetriorder(turtle->next, len, stage + 1)))
-			return (test);
-dprintf(1, "tetri_order33: %d\n", ++debug);
+		if (ft_push_tetriminos(turtle))
+		{
+			if ((test = ft_tetriorder(turtle->next, len, stage + 1)))
+				return (test);
+		}
+		else
+			return (ft_reorder(turtle));
 		rabbit = ft_followrightrabbit(turtle, &i, &readymade);
-dprintf(1, "tetri_order44: %d\n", ++debug);
 		ft_tetriswap(turtle, rabbit);
-dprintf(1, "tetri_order55: %d\n", ++debug);
 		if (rabbit)
 			turtle = rabbit;
 	}
-	if (rabbit && (test = ft_tetriorder(turtle->next, len, stage + 1)))
-			return (test);
 	return (ft_reorder(turtle));
 }
 
+/*
+		else if (!stage && ft_push_tetriminos(ft_increm_x_tetris(turtle)))
+		{
+			if ((test = ft_tetriorder(turtle->next, len, stage + 1)))
+				return (test);
+		}
+*/
 t_tetriminos			*ft_squ_lunch(t_tetriminos *begin, int len)
 {
 	int				i;
@@ -619,55 +686,13 @@ t_tetriminos			*ft_squ_lunch(t_tetriminos *begin, int len)
 	}
 	while (sq < 16)
 	{
-dprintf(1, "wesh1: %d\n", sq);
 		glb_sqr_dim(SET, sq);
 		if((result = ft_tetriorder(begin, len, 0)))
 			return (result);
-dprintf(1, "wesh2: %d\n", sq);
 		sq++;
 	}
 	return (NULL);
 }
-/*
-   0123
-   0132
-   0213
-   0231
-   0312
-   0321
-   1023
-   1032
-   1203
-   1230
-   1302
-   1320
-   2013
-
-
-
-   etage 0
-   0123
-   1023
-   2013
-   3012
-
-   etage 1
-   0123
-   0213
-   0312
-
-   1023
-   1203
-   1302
-
-   etage 2
-   0123
-   0132
-
-
-
-
-*/
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
@@ -676,11 +701,12 @@ dprintf(1, "wesh2: %d\n", sq);
 /*   By: fjanoty <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/03 21:51:14 by fjanoty           #+#    #+#             */
-/*   Updated: 2016/02/05 04:24:14 by fjanoty          ###   ########.fr       */
+/*   Updated: 2016/02/06 20:00:42 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "glb.h"
+#include <stdio.h>
 
 int		glb_nb_windows(int mode, int sqr_dim)
 {
@@ -707,6 +733,7 @@ int		glb_sqr_dim(int mode, int value)
 		return (sqr_dim);
 	else if (mode & SET)
 	{
+//dprintf(1, "ON SETTTTTT :::%d\n", value);
 		ground = glb_ground(GET, 0);
 		ground->dim = value;
 		glb_nb_windows(SET, value);
@@ -778,7 +805,7 @@ int		main(int ac, char **av)
 /*   By: fjanoty <fjanoty@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/04 20:05:26 by fjanoty           #+#    #+#             */
-/*   Updated: 2016/02/04 21:15:04 by fjanoty          ###   ########.fr       */
+/*   Updated: 2016/02/07 23:26:51 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -840,18 +867,18 @@ unsigned	long	get_horizontal_mask(int size)
 	return (masks[size]);
 }
 
-int		ft_resting_posx(t_tetriminos *elem, int i)
+int		ft_resting_posx(t_tetriminos *elem)
 {
-	elem->valu >>= (8 - elem->dim->x);
+	elem->valu >>= (elem->pos->x);
 	elem->pos->x = 0;
-	return (i);
+	return (0);
 }
 
-int		ft_resting_posy(t_tetriminos *elem, int j)
+int		ft_resting_posy(t_tetriminos *elem)
 {
-	elem->valu >>= ((8 - elem->dim->y) * 8);
+	elem->valu >>= ((elem->pos->y) * 8);
 	elem->pos->y = 0;
-	return (j);
+	return (0);
 }
 /* ************************************************************************** */
 /*                                                                            */
@@ -861,72 +888,75 @@ int		ft_resting_posy(t_tetriminos *elem, int j)
 /*   By: fjanoty <fjanoty@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/03 22:03:34 by fjanoty           #+#    #+#             */
-/*   Updated: 2016/02/05 10:44:38 by fjanoty          ###   ########.fr       */
+/*   Updated: 2016/02/10 22:09:30 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "print.h"
+#include <stdio.h>
+#include "header.h"
+#include "debug.h"
 
-char	*ft_init_str_result()
+char	*ft_init_str_result(int len)
 {
 	char	*result;
-	int		len;
+	int		i;
 
-	len = glb_sqr_dim(GET, 0);
-	len = len * (len + 1);
-	if (!(result = (char*)malloc(sizeof(char) * (len + 1))))
+	i = 0;
+	if (!(result = (char*)malloc(sizeof(char) * (len * (len + 1) + 1))))
 		return (NULL);
-	result[len] = '\0';
-	return (result);
-}
-
-int	indice_input(t_coordone *pos, t_coordone *indice,int len)
-{
-	return ((indice->x + pos->x) + ((indice->y + pos->y) * len + 1));
-}
-
-char	*ft_get_result(t_coordone *pos, t_coordone *indice, t_tetriminos *elem, int len)
-{
-	static	char		*result = 0;
-	static	int			init = 1;
-	unsigned	long	unite;
-
-	if (init)
-		result = ft_init_str_result();
-	unite = 1;
-	while (indice->y < 4)
+	while (i < len * (len + 1))
 	{
-		indice->x = 0;
-		while (indice->x < 4)
-		{
-			if (elem->valu & unite << (indice->x + (8 * indice->y)))
-				result[indice_input(pos, indice, len)] = elem->id;
-			(indice->x)++;
-		}
-		(indice->y)++;
+		if (i % (len + 1) == len)
+			result[i] = '\n';
+		else
+			result[i] = '.';
+		i++;
 	}
+	result[i] = '\0';
 	return (result);
+}
+
+void	ft_add_strtetri(t_tetriminos *elem, t_coordone *pos, char *str, int len)
+{
+	int	i;
+	int	j;
+
+	j = 0;
+	while (j < 4)
+	{
+		i = 0;
+		while (i < 4)
+		{
+			if (elem->valu & (1 << (i + (8 * j))))
+				str[i + pos->x + ((len + 1) * (j + pos->y))] = elem->id;
+			i++;
+		}
+		j++;
+	}
 }
 
 void	ft_print_result(t_tetriminos *begin)
 {
 	t_coordone			*pos;
-	t_coordone			*indice;
 	int					len;
 	char	*result;
 
+//print_all_tetris(begin);
+//print_ground(glb_ground(GET, 0));
 	pos = create_coordone();
-	indice = create_coordone();
-	len= glb_sqr_dim(GET, 0);
+	len = glb_sqr_dim(GET, 0) - 1;
+	result = ft_init_str_result(len);
 	while (begin)
 	{
-		copy_coordone(pos, begin->pos);
-		ft_resting_posx(begin, 0);
-		ft_resting_posx(begin, 0);
-		result = ft_get_result(pos, indice, begin, len);
+		copy_coordone(pos, begin->pos, begin->ecr);
+		ft_resting_posx(begin);
+		ft_resting_posy(begin);
+		ft_add_strtetri(begin, pos, result, len);
 		begin = begin->next;
 	}
 	ft_putstr(result);
+//printf("###############################################:	%s\n", result);
 	free(result);
 	free(pos);
 }
@@ -1109,7 +1139,7 @@ YYYYZZZZ....
 /*   By: fjanoty <fjanoty@student.fr>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/27 06:06:49 by fjanoty           #+#    #+#             */
-/*   Updated: 2016/01/27 06:19:26 by fjanoty          ###   ########.fr       */
+/*   Updated: 2016/02/07 23:16:24 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -1120,7 +1150,8 @@ t_tetriminos	*create_tetriminos(int id)
 	t_tetriminos	*piece;
 	if (!(piece = (t_tetriminos*)malloc(sizeof(t_tetriminos))))
 		return (NULL);
-	if (!(piece->dim = create_coordone()) || !(piece->pos = create_coordone()))
+	if (!(piece->dim = create_coordone()) || !(piece->pos = create_coordone())
+		|| !(piece->ecr = create_coordone()))
 		return (NULL);
 	piece->id = id + 'A';
 	piece->valu = 0;
@@ -1163,6 +1194,9 @@ int	tetris_free(t_tetriminos *elem)
 		while (elem)
 		{
 			save = (elem)->next;
+			free(elem->ecr);
+			free(elem->pos);
+			free(elem->dim);
 			free(elem);
 			elem = save;
 		}
@@ -1173,8 +1207,8 @@ int	tetris_free(t_tetriminos *elem)
 void			finished_tetriminos(t_tetriminos *tetris)
 {
 	tetris->gap = (tetris->gap % 5) - tetris->pos->x; 
-	tetris->dim->x = tetris->dim->x - tetris->pos->x;
-	tetris->dim->y = tetris->dim->y - tetris->pos->y;
+	tetris->dim->x = tetris->dim->x - tetris->pos->x + 1;
+	tetris->dim->y = tetris->dim->y - tetris->pos->y + 1;
 	tetris->valu = tetris->valu >> (tetris->pos->x + (tetris->pos->y * 8));
 	tetris->pos->x = 0;
 	tetris->pos->y = 0;

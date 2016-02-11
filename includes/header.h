@@ -6,14 +6,14 @@
 /*   By: fjanoty <fjanoty@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/05 18:23:53 by fjanoty           #+#    #+#             */
-/*   Updated: 2016/02/05 06:18:19 by tboos            ###   ########.fr       */
+/*   Updated: 2016/02/11 03:38:33 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef HEADER_H
 # define HEADER_H
 
-# define BUF 547
+# define BUF 546
 # include <stdlib.h>
 # include <stdio.h>
 # include "tetriminos.h"

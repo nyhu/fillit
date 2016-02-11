@@ -1,42 +1,47 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   main_test.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fjanoty <fjanoty@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/11/03 22:45:56 by fjanoty           #+#    #+#             */
-/*   Updated: 2016/02/11 03:47:11 by fjanoty          ###   ########.fr       */
+/*   Created: 2016/02/11 03:49:56 by fjanoty           #+#    #+#             */
+/*   Updated: 2016/02/11 04:11:43 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "header.h"
+#include <stdio.h>
 
-int		main(int ac, char **av)
+typedef struct	s_tata
 {
-	int		fd;
-	int		ret;
-	char	buf[BUF];
+	int i;
+	int j;
+}				t_tata;
 
-	if (ac == 2)
+void	init_tab(t_tata *tab)
+{
+	int	i;
+
+	i = 0;
+	while (i < 10)
 	{
-		if ((fd = open(av[1], O_RDONLY, S_IREAD)) > 0)
-		{
-			if ((ret = read(fd, buf, BUF)))
-			{
-				if ((ret + 1) % 21 == 0)
-				{
-					buf[ret] = '\0';
-					close(fd);
-					fillit_structure(buf, ret);
-				}
-			}
-			else
-				close(fd);
-		ft_putstr_fd("error\n", 1);
-		}	
+		tab[i].i = i;
+		tab[i].j = i * 10;
+		i++;
 	}
-	else
-		ft_putstr_fd("usage: fillit tetriminos_file\n", 1);
+}
+
+int	main(void)
+{
+	int		i;
+	t_tata	tab[11];
+
+	init_tab(tab);
+	i = 0;
+	while (i < 11)
+	{
+		printf("haha %d %d\n", tab[i].i, tab[i].j);
+		i++;
+	}
 	return (0);
 }
