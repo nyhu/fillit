@@ -6,34 +6,21 @@
 /*   By: fjanoty <fjanoty@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/05 18:23:53 by fjanoty           #+#    #+#             */
-/*   Updated: 2016/02/05 06:18:56 by fjanoty          ###   ########.fr       */
+/*   Updated: 2016/02/11 10:12:35 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "square_result.h"
 
-t_sqare	*ft_create_square(void)
+t_square	*ft_init_ground(t_square *ground)
 {
-	t_sqare	*ground;
-	int		i;
-	int		j;
+	int	i;
 
-	ground = (t_sqare*)malloc(sizeof(t_sqare));
-	if (!ground)
-		return (NULL);
-	ground->area = (unsigned long **)malloc(sizeof(unsigned long *) * 2);
-	if (!ground->area)
-		return (NULL);
 	i = 0;
-	while (i < 2)
+	while (i < 4)
 	{
-		j = -1;
-		ground->area[i] = (unsigned long *)malloc(sizeof(unsigned long) * 2);
-		if (!ground->area[i])
-			return (NULL);
-		while (++j < 2)
-			ground->area[i][j] = 0;
+		ground->[i / 2][i % 2] = 0;
 		i++;
 	}
 	ground->dim = 0;

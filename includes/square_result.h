@@ -6,7 +6,7 @@
 /*   By: fjanoty <fjanoty@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/05 18:23:53 by fjanoty           #+#    #+#             */
-/*   Updated: 2016/02/05 06:18:55 by fjanoty          ###   ########.fr       */
+/*   Updated: 2016/02/11 09:25:07 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,10 @@
 
 typedef	struct			s_square
 {
-	unsigned	long	**area;
+	unsigned	long	area[2][2];
 	int					dim;
 }						t_sqare;
+t_square				*ft_init_ground(t_square *ground)
 #endif
 
 /*
