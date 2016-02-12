@@ -20,7 +20,6 @@ S =		add_rm_tetri.c\
 		filling.c\
 		fillit_structure.c\
 		ft_reorder.c\
-		ft_tetrilen.c\
 		ft_tetriorder.c\
 		glb.c\
 		main.c\
