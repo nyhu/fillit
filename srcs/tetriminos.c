@@ -6,7 +6,7 @@
 /*   By: fjanoty <fjanoty@student.fr>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/27 06:06:49 by fjanoty           #+#    #+#             */
-/*   Updated: 2016/02/12 11:20:44 by fjanoty          ###   ########.fr       */
+/*   Updated: 2016/02/12 23:00:56 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,10 @@ void				create_tetriminos(t_tetriminos *piece, int id)
 	piece->valu = 0;
 	piece->xp = 8;
 	piece->yp = 8;
+	piece->xd = 0;
+	piece->yd = 0;
+	piece->xs = 0;
+	piece->ys = 0;
 }
 
 void				tetris_define_type(t_tetriminos *array, int nb)

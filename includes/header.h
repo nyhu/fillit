@@ -6,7 +6,7 @@
 /*   By: fjanoty <fjanoty@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/05 18:23:53 by fjanoty           #+#    #+#             */
-/*   Updated: 2016/02/12 21:43:57 by tboos            ###   ########.fr       */
+/*   Updated: 2016/02/12 23:40:23 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include <fcntl.h>
 # include "structure.h"
 # include "libft.h"
+# include "glb.h"
 
 void				ft_exit(int mode);
 t_sqare				*glb_ground(int mode, t_sqare *value);

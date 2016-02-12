@@ -6,7 +6,7 @@
 /*   By: fjanoty <fjanoty@student.fr>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/27 07:38:47 by fjanoty           #+#    #+#             */
-/*   Updated: 2016/02/04 20:21:28 by tboos            ###   ########.fr       */
+/*   Updated: 2016/02/12 23:00:49 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,8 @@ int				first_case(char *str)
 	return (-1);
 }
 
-void			search_the_diese(char *piece, t_tetriminos *tetris
-				, int *nb, int i)
+void			search_the_diese(char *piece, t_tetriminos *tetris,
+				int *nb, int i)
 {
 	unsigned	long	unite;
 
@@ -61,7 +61,7 @@ void			search_the_diese(char *piece, t_tetriminos *tetris
 		actual_mini_maxi(tetris, i);
 		if ((i - 1) % 5 != 4 && (i - 1) >= 0)
 			search_the_diese(piece, tetris, nb, i - 1);
-		if ((i + 1) % 5 != 0 && (i + 1) % 5 != 4 && (i + 1) < 20)
+		if ((i + 1) % 5 != 4 && (i + 1) < 20)
 			search_the_diese(piece, tetris, nb, i + 1);
 		if (i + 5 < 20)
 			search_the_diese(piece, tetris, nb, i + 5);
