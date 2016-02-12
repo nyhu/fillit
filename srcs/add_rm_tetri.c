@@ -6,7 +6,7 @@
 /*   By: fjanoty <fjanoty@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/03 22:11:42 by fjanoty           #+#    #+#             */
-/*   Updated: 2016/02/12 05:43:30 by fjanoty          ###   ########.fr       */
+/*   Updated: 2016/02/12 11:20:27 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ int	ft_push_tetriminos(t_tetriminos *elem)
 	unsigned	long	windows[3];
 	int					nb_windows;
 	int					dim;
-
+	
 	nb_windows = glb_nb_windows(GET, 0);
 	dim = glb_sqr_dim(GET, 0);
 	ECR_X = 0;

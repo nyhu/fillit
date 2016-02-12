@@ -6,11 +6,12 @@
 /*   By: fjanoty <fjanoty@student.fr>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/27 06:06:49 by fjanoty           #+#    #+#             */
-/*   Updated: 2016/02/12 05:43:29 by fjanoty          ###   ########.fr       */
+/*   Updated: 2016/02/12 11:20:44 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tetriminos.h"
+#include <stdio.h>
 
 void				create_tetriminos(t_tetriminos *piece, int id)
 {
@@ -30,7 +31,7 @@ void				tetris_define_type(t_tetriminos *array, int nb)
 	tetris = &(array[nb]);
 	first = 1;
 	nb--;
-	while (nb)
+	while (nb >= 0)
 	{
 		first = 0;
 		if ((array[nb]).type > type_max)
