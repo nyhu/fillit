@@ -6,19 +6,22 @@
 /*   By: fjanoty <fjanoty@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/11 03:49:56 by fjanoty           #+#    #+#             */
-/*   Updated: 2016/02/12 06:02:27 by fjanoty          ###   ########.fr       */
+/*   Updated: 2016/02/12 23:02:02 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include <stdio.h>
-/*
+//*
 typedef struct	s_tata
 {
 	int i;
 	int j;
 }				t_tata;
+//*/
 
+
+/*
 void	init_tab(t_tata tab[10][1])
 {
 	int		i;
@@ -34,7 +37,9 @@ void	init_tab(t_tata tab[10][1])
 		i++;
 	}
 }
+//*/
 
+/*
 int		main(void)
 {
 	int		i;
@@ -52,11 +57,18 @@ int		main(void)
 	}
 	return (0);
 }
-*/
+//*/
 
 int main(void)
 {
-	printf("haha");
-	write(1, "bouh\n", 5);
+	t_tata	*ouioui;
+	t_tata	haha;
+
+	haha.i = 0;
+	haha.j = 0;
+	
+	if ((*ouioui = haha))
+		;
+	haha = *ouioui;
 	return (0);
 }

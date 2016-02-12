@@ -6,7 +6,7 @@
 /*   By: fjanoty <fjanoty@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/04 19:09:50 by fjanoty           #+#    #+#             */
-/*   Updated: 2016/02/12 05:07:13 by fjanoty          ###   ########.fr       */
+/*   Updated: 2016/02/12 23:33:32 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,16 +21,16 @@
 # include "manip_bin.h"
 # include "glb.h"
 
-# define Y elem->yp
-# define X elem->xp
-# define DIM_X elem->xd
-# define DIM_Y elem->yd
-# define ECR_Y elem->ys
-# define ECR_X elem->xs
+# define Y tetri.yp
+# define X tetri.xp
+# define DIM_X tetri.xd
+# define DIM_Y tetri.yd
+# define ECR_Y tetri.ys
+# define ECR_X tetri.xs
 
 unsigned	long	ft_working_window(t_sqare *gr, int x, int y);
 void				ft_init_windows(unsigned long *windows, int stage);
 void				ft_remouve_tetris(t_tetriminos *elem);
 int					ft_set_tetris(unsigned long valu, int x, int y);
-int					ft_push_tetriminos(t_tetriminos *elem);
+int					ft_push_tetriminos(t_tetriminos *elem, int dim);
 #endif

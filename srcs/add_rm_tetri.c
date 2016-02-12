@@ -6,7 +6,7 @@
 /*   By: fjanoty <fjanoty@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/03 22:11:42 by fjanoty           #+#    #+#             */
-/*   Updated: 2016/02/12 11:20:27 by fjanoty          ###   ########.fr       */
+/*   Updated: 2016/02/13 00:16:02 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,34 +77,41 @@ void	ft_remouve_tetris(t_tetriminos *tetri)
 	tetri->ys = 0;
 }
 
-int		ft_last_loop(t_tetriminos *elem, int dim, unsigned long *windows)
+int		ft_last_loop(t_tetriminos *elem, t_tetriminos tetri, int dim, unsigned long *windows)
 {
 	while ((X < 8 - DIM_X) && X + (4 * ECR_X) < dim - DIM_X)
 	{
-		if ((elem->valu & windows[ECR_X]) == 0)
+		if ((tetri.valu & windows[ECR_X]) == 0)
 		{
-			ft_set_tetris(elem->valu, ECR_X, ECR_Y);
+			ft_set_tetris(tetri.valu, ECR_X, ECR_Y);
+			*elem = tetri;
 			return (1);
 		}
-		elem->valu <<= 1;
+		tetri.valu <<= 1;
 		(X)++;
 	}
 	(ECR_X)++;
-	ft_resting_posx(elem);
+	ft_resting_posx(&tetri);
 	return (0);
 }
 
-//void	ft_reset
+static	void	ft_ending_push(t_tetriminos *elem, t_tetriminos *tetri)
+{
+	*elem = *tetri;
+	ft_resting_posy(elem);
+	ft_resting_posx(elem);
+	elem->xs = 0;
+	elem->ys = 0;
+}
 
-int	ft_push_tetriminos(t_tetriminos *elem)
+int		ft_push_tetriminos(t_tetriminos *elem, int dim)
 {
 	unsigned	long	windows[3];
 	int					nb_windows;
-	int					dim;
+	t_tetriminos		tetri;
 	
+	tetri = *elem; 
 	nb_windows = glb_nb_windows(GET, 0);
-	dim = glb_sqr_dim(GET, 0);
-	ECR_X = 0;
 	while (ECR_Y < nb_windows)
 	{
 		ft_init_windows(windows, ECR_Y);
@@ -112,18 +119,15 @@ int	ft_push_tetriminos(t_tetriminos *elem)
 		{
 			while(ECR_X < nb_windows)
 			{
-				if (ft_last_loop(elem, dim, windows))
+				if (ft_last_loop(elem, tetri, dim, windows))
 					return (1);
 			}
 			ECR_X = 0;
-			elem->valu <<= 8;
+			tetri.valu <<= 8;
 			(Y)++;
 		}
 		(ECR_Y)++;
 	}
-	ft_resting_posy(elem);
-	ft_resting_posx(elem);
-	ECR_Y = 0;
-	ECR_X = 0;
+	ft_ending_push(elem, &tetri);
 	return (0);
 }
