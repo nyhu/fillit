@@ -6,7 +6,7 @@
 /*   By: fjanoty <fjanoty@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/04 20:08:05 by fjanoty           #+#    #+#             */
-/*   Updated: 2016/02/04 21:15:08 by fjanoty          ###   ########.fr       */
+/*   Updated: 2016/02/12 05:00:02 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,6 @@
 
 unsigned	long	get_vertical_mask(int size);
 unsigned	long	get_horizontal_mask(int size);
-int					ft_resting_posx(t_tetriminos *elem, int i);
-int					ft_resting_posy(t_tetriminos *elem, int j);
+void				ft_resting_posx(t_tetriminos *elem);
+void				ft_resting_posy(t_tetriminos *elem);
 #endif

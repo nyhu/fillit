@@ -6,134 +6,124 @@
 /*   By: fjanoty <fjanoty@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/03 22:11:42 by fjanoty           #+#    #+#             */
-/*   Updated: 2016/02/05 10:48:11 by fjanoty          ###   ########.fr       */
+/*   Updated: 2016/02/12 05:02:25 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "add_rm_tetri.h"
+#include "debug.h"
+#include <stdio.h>
 
-unsigned	long	ft_working_window(t_sqare *gr, t_coordone *pos)
+/*area[x][y]*/
+unsigned	long	ft_working_window(t_sqare *gr, int x, int y)
 {
 	unsigned	long	mh;
 	unsigned	long	mv;
 	unsigned	long	ecr;
 
-	mh = get_horizontal_mask(pos->x);
-	mv = get_horizontal_mask(pos->y);
-	ecr = ((gr->area[0][0] & ~mv & ~mh) >> (pos->x + (8 * pos->y)));
-	ecr |= (((gr->area[0][1] & ~mv & mh) >> pos->x) << (8 * (8 - pos->y)));
-	ecr |= (((gr->area[1][0] & mv & ~mh) << (8 - pos->x)) >> (8 * (pos->y)));
-	ecr |= ((gr->area[1][1] & mv & mh) << ((8 - pos->x) + (8 * (8 - pos->y))));
+	mh = get_vertical_mask(x);
+	mv = get_horizontal_mask(y);
+	ecr = ((gr->area[0][0] & ~mv & ~mh) >> (x + (8 * y)));
+	ecr |= (((gr->area[0][1] & mv & ~mh) >> x) << (8 * (8 - y)));
+	ecr |= (((gr->area[1][0] & ~mv & mh) << (8 - x)) >> (8 * y));
+	ecr |= ((gr->area[1][1] & mv & mh) << ((8 - x) + (8 * (8 - y))));
 	return (ecr);
 }
 
-
-unsigned	long	*ft_init_windows(t_coordone *pos, int stage)
+void	ft_init_windows(unsigned long *windows, int stage)
 {
 	int					i;
-	unsigned	long	*windows;
 	t_sqare				*ground;
 	int					nb_win;
+	int					x;
+	int					y;
 
 	ground = glb_ground(GET, 0);
 	nb_win = glb_nb_windows(GET, 0);
-	pos = create_coordone_y(stage * 4);
-	windows = (unsigned long *) malloc(sizeof(unsigned long) * 3);
 	i = 0;
+	y = stage * 4;
 	while (i < nb_win)
 	{
-		pos->x = (i * 4);
-		windows[i] = ft_working_window(ground, pos);
+		x = (i * 4);
+		windows[i] = ft_working_window(ground, x, y);
 		i++;
 	}
-	free(pos);
-	return (windows);
 }
 
-int		ft_set_tetris(t_tetriminos *t, t_coordone *pos)
+int		ft_set_tetris(unsigned long valu, int x, int y)
 {
 	unsigned	long	mh;
 	unsigned	long	mv;
 	t_sqare				*gr;
 
 	gr = glb_ground(GET, 0);
-	pos->x *= 4;
-	pos->y *= 4;
-	mv = get_vertical_mask(pos->x);
-	mh = get_horizontal_mask(pos->y);
-	gr->area[0][0] |= (t->valu & ~mh & ~mv) >> (pos->x + (8 * pos->y));
-	gr->area[0][1] |= ((t->valu & ~mh & mv) >> pos->x) << (8 * (8 - pos->y));
-	gr->area[1][0] |= ((t->valu & mh & ~mv) << (8 - pos->x)) >> (8 * pos->y);
-	gr->area[1][1] |= (t->valu & mh & mv) << (8 - pos->x + (8 * (8 - pos->y)));
+	x *= 4;
+	y *= 4;
+	mv = get_vertical_mask(8 - x);
+	mh = get_horizontal_mask(8 - y);
+	gr->area[0][0] ^= (valu & mv & mh) << (x + (8 * y));
+	gr->area[0][1] ^= ((valu & mv & ~mh) << x) >> (8 * (8 - y ));
+	gr->area[1][0] ^= ((valu & ~mv & mh) >> (8 - x)) << (8 * y);
+	gr->area[1][1] ^= (valu & ~mv & ~mh) >> (8 - x + (8 * (8 - y)));
 	return (1);
 }
 
-void	ft_remouve_tetris(t_tetriminos *t)
+void	ft_remouve_tetris(t_tetriminos *tetri)
 {
-	unsigned	long	mh;
-	unsigned	long	mv;
-	t_coordone			*p;
-	t_sqare				*gr;
-
-	p = create_coordone();
-
-	gr = glb_ground(GET, 0);
-	p->x = (t->pos->x / 4) * 4;
-	p->y = (t->pos->y / 4) * 4;
-	mv = get_vertical_mask(p->x);
-	mh = get_horizontal_mask(p->y);
-	gr->area[0][0] &= ~((t->valu & ~mh & ~mv) >> (p->x + (8 * p->y)));
-	gr->area[0][1] &= ~(((t->valu & ~mh & mv) >> p->x) << (8 * (8 - p->y)));
-	gr->area[1][0] &= ~(((t->valu & mh & ~mv) << (8 - p->x)) >> (8 * p->y));
-	gr->area[1][1] &= ~((t->valu & mh & mv) << (8 - p->x + (8 * (8 - p->y))));
-	free(p);
+	ft_set_tetris(tetri->valu, tetri->xs, tetri->ys);
+	ft_resting_posx(tetri);
+	ft_resting_posy(tetri);
+	tetri->xs = 0;
+	tetri->ys = 0;
 }
 
-static	int		my_free(t_coordone *indice)
+int		ft_last_loop(t_tetriminos *elem, int dim, unsigned long *windows)
 {
-	free(indice);
-	return (1);
-}
-
-int		ft_last_loop(t_tetriminos *elem, t_coordone *indice, int dim
-		, unsigned long *windows)
-{
-	while ((X < 7 - DIM_X) && X + (4 * IND_X) < dim - DIM_X)
+	while ((X < 8 - DIM_X) && X + (4 * ECR_X) < dim - DIM_X)
 	{
-		if (((elem->valu & windows[IND_X]) == 0)
-			&& ft_set_tetris(elem, indice) && my_free(indice))
+		if ((elem->valu & windows[ECR_X]) == 0)
+		{
+			ft_set_tetris(elem->valu, ECR_X, ECR_Y);
 			return (1);
+		}
 		elem->valu <<= 1;
 		(X)++;
 	}
-	ft_resting_posx(elem, (IND_X)++);
+	(ECR_X)++;
+	ft_resting_posx(elem);
 	return (0);
 }
 
+//void	ft_reset
+
 int	ft_push_tetriminos(t_tetriminos *elem)
 {
-	t_coordone			*indice;
-	unsigned	long	*windows;
+	unsigned	long	windows[3];
 	int					nb_windows;
 	int					dim;
 
-	indice = create_coordone();
 	nb_windows = glb_nb_windows(GET, 0);
 	dim = glb_sqr_dim(GET, 0);
-	windows = ft_init_windows(0, IND_Y);
-	while (IND_Y < nb_windows)
+	ECR_X = 0;
+	while (ECR_Y < nb_windows)
 	{
-		while ((Y < 8 - DIM_Y) && Y + (4 * IND_Y) < dim - DIM_Y)
+		ft_init_windows(windows, ECR_Y);
+		while ((Y < 8 - DIM_Y) && Y + (4 * ECR_Y) < dim - DIM_Y)
 		{
-			while(IND_X < nb_windows)
-				if (ft_last_loop(elem, indice, dim, windows))
+			while(ECR_X < nb_windows)
+			{
+				if (ft_last_loop(elem, dim, windows))
 					return (1);
+			}
+			ECR_X = 0;
 			elem->valu <<= 8;
 			(Y)++;
 		}
-		ft_resting_posy(elem, (IND_Y)++);
+		(ECR_Y)++;
 	}
-	free(windows);
-	free(indice);
+	ft_resting_posy(elem);
+	ft_resting_posx(elem);
+	ECR_Y = 0;
+	ECR_X = 0;
 	return (0);
 }

@@ -1,28 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   coordone.h                                         :+:      :+:    :+:   */
+/*   error.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fjanoty <fjanoty@student.fr>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/01/27 07:10:04 by fjanoty           #+#    #+#             */
-/*   Updated: 2016/02/12 05:20:56 by fjanoty          ###   ########.fr       */
+/*   Created: 2016/01/27 07:21:52 by fjanoty           #+#    #+#             */
+/*   Updated: 2016/02/05 03:51:53 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef COORDONE_H
-# define COORDONE_H
+#ifndef ERROR_H
+# define ERROR_H
 
-# include "tetriminos.h"
-# include <stdlib.h>
+# define ERROR 0
+# define INIT 4
+# define SET 2
+# define GET 1
 
-typedef	struct	s_coordone
-{
-	int			x;
-	int			y;
-}				t_coordone;
+int	error(int mode);
 
-t_coordone		*create_coordone(void);
-t_coordone		*create_coordone_y(int y);
-void			copy_coordone(t_coordone *pos_dst, t_tetriminos *elem);
 #endif

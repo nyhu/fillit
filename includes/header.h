@@ -6,7 +6,7 @@
 /*   By: fjanoty <fjanoty@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/05 18:23:53 by fjanoty           #+#    #+#             */
-/*   Updated: 2016/02/12 02:17:35 by fjanoty          ###   ########.fr       */
+/*   Updated: 2016/02/12 05:23:56 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void				ft_tetriswap(t_tetriminos *r1, t_tetriminos *r2);
 t_tetriminos		*ft_reorder(t_tetriminos *rabbit);
 t_tetriminos		*ft_tetriorder(t_tetriminos *turtle, int len, int stage);
 t_tetriminos		*ft_squ_lunch(t_tetriminos *begin, int len);
-void				ft_print_result(t_tetriminos *begin);
+void				ft_print_result(t_tetriminos *begin, int size);
 int					glb_sqr_dim(int mode, int value);
 int					ft_push_tetriminos(t_tetriminos *elem);
 #endif

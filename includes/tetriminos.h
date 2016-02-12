@@ -6,7 +6,7 @@
 /*   By: fjanoty <fjanoty@student.fr>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/27 06:15:34 by fjanoty           #+#    #+#             */
-/*   Updated: 2016/01/27 07:21:10 by fjanoty          ###   ########.fr       */
+/*   Updated: 2016/02/12 04:59:14 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ struct				s_tetriminos
 	int				yd;
 	int				xp;
 	int				yp;
+	int				ys;
+	int				xs;
 };
 
 void				create_tetriminos(t_tetriminos *tetris, int id);

@@ -6,7 +6,7 @@
 /*   By: fjanoty <fjanoty@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/05 18:23:53 by fjanoty           #+#    #+#             */
-/*   Updated: 2016/02/08 17:08:27 by tboos            ###   ########.fr       */
+/*   Updated: 2016/02/12 05:20:52 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ t_coordone		*create_coordone_y(int y)
 	return (position);
 }
 
-void			copy_coordone(t_coordone *pos_dst, t_coordone *pos_src)
+void			copy_coordone(t_coordone *pos_dst, t_tetriminos *tetris)
 {
-	pos_dst->x = pos_src->x;
-	pos_dst->y = pos_src->y;
+	pos_dst->x = tetris->xp + (tetris->xp * 4);
+	pos_dst->y = tetris->yp + (tetris->yp * 4);
 }
