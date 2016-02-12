@@ -6,7 +6,7 @@
 /*   By: fjanoty <fjanoty@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/03 21:53:00 by fjanoty           #+#    #+#             */
-/*   Updated: 2016/02/05 04:24:13 by fjanoty          ###   ########.fr       */
+/*   Updated: 2016/02/12 05:51:39 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # define SET 2
 # include <stdlib.h>
 # include "square_result.h"
+# include "glb.h"
 
 
 int			glb_nb_windows(int mode, int sqr_dim);

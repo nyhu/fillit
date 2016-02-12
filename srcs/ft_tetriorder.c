@@ -6,17 +6,17 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/03 18:14:15 by tboos             #+#    #+#             */
-/*   Updated: 2016/02/08 17:14:56 by tboos            ###   ########.fr       */
+/*   Updated: 2016/02/12 09:39:12 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "header.h"
 
-static void				ft_followrightrabbit(t_tetriminos **arrow, int *i, int len, int *readymade)
+static int	ft_followrightrabbit(t_tetriminos **arrow, int *i, int len, int *readymade)
 {
-	while (i <= len && (*readymade & (arrow[*i])->type))
+	while (*i <= len && (*readymade & (arrow[*i])->type))
 		(*i)++;
-	if (i <= len)
+	if (*i <= len)
 	{
 		*readymade += (arrow[*i])->type;
 		return (1);
@@ -33,16 +33,18 @@ t_tetriminos			**ft_tetriorder(t_tetriminos **arrow, int len, int stage)
 	if (stage == len && ft_push_tetriminos(arrow[stage]))
 		return (arrow);
 	else if (stage == len)
-		return (ft_reorder(arrow, stage));
+		return (ft_reorder(arrow, stage, len));
 	i = stage;
 	readymade = 0;
-	while (++i <= len - stage || rabbit)
+	while (++i <= len - stage)
 	{
 		if (ft_push_tetriminos(arrow[stage]))
+		{
 			if ((test = ft_tetriorder(arrow, len, stage + 1)))
 				return (test);
+		}
 		else
-			return (ft_reorder(arrow, stage));
+			return (ft_reorder(arrow, stage, len));
 		if ((ft_followrightrabbit(arrow, &i, len, &readymade)))
 			ft_tetriswap(arrow, stage, i);
 	}

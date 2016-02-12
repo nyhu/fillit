@@ -6,30 +6,50 @@
 /*   By: fjanoty <fjanoty@student.fr>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/27 06:46:52 by fjanoty           #+#    #+#             */
-/*   Updated: 2016/02/10 20:37:01 by fjanoty          ###   ########.fr       */
+/*   Updated: 2016/02/12 06:05:31 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "debug.h"
 
+void	print_long(unsigned long valu)
+{
+	int					i;
+	int					j;
+	unsigned	long	unite;
+	
+	i = 0;
+	j = 0;
+	unite = 1;
+	while (j < 8)
+	{
+		while (i < 8)
+		{
+			if (valu & unite << (i + (8 * j)))
+				printf("#");
+			else
+				printf(".");
+			i++;
+		}
+		printf("\n");
+		j++;
+	}
+}
+
 void	print_working_windows(unsigned long *windows)
 {
 	int	nb_windows;
 	int	j;
-	t_tetriminos	*tet;
 
 	j = 0;
-	tet = create_tetriminos(0);
 	nb_windows = glb_nb_windows(GET, 0);
 	while (j < nb_windows)
 	{
 		dprintf(1, "windows:%d", j);
-		tet->valu = windows[j];
-		print_tetris(tet);
+		print_long(windows[j]);
 		j++;
 	}
 	dprintf(1, "\n");
-	free(tet);
 }
 
 void	print_ground(t_sqare *sqr)
@@ -86,10 +106,10 @@ void	print_tetris(t_tetriminos *piece)
 	}
 }
 
-void	print_coordone(t_coordone *pos, char *name)
+void	print_coordone(int x, int y, char *name)
 {
-	dprintf(1, "%s: x:%d ", name, pos->x);
-	dprintf(1, "%s: y:%d\n", name, pos->y);
+	dprintf(1, "%s: x:%d ", name, x);
+	dprintf(1, "%s: y:%d\n", name, y);
 }
 
 void	describe_tetris(t_tetriminos *tetris)
@@ -99,16 +119,18 @@ void	describe_tetris(t_tetriminos *tetris)
 	dprintf(1, "id   :%c   ", tetris->id);
 	dprintf(1, "type :%d   ", tetris->type);
 	dprintf(1, "gap  :%d\n", tetris->gap);
-	print_coordone(tetris->dim, " dim");
-	print_coordone(tetris->pos, " pos");
-	print_coordone(tetris->ecr, " ecr");
+	print_coordone(tetris->xd, tetris->yd, " dim");
+	print_coordone(tetris->xp, tetris->yp, " pos");
+	print_coordone(tetris->xs, tetris->ys, " ecr");
 }
 
 void	print_all_tetris(t_tetriminos *tetris)
 {
-	if (tetris)
+	if (tetris->id >= 'A' && tetris->id <= 'Y')
 	{
 		describe_tetris(tetris);
-		print_all_tetris(tetris->next);
+		print_all_tetris(tetris++);
 	}
+	if (tetris->id == 'Z')
+		describe_tetris(tetris);
 }

@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr> 	                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/02 21:44:00 by tboos             #+#    #+#             */
-/*   Updated: 2016/02/05 21:24:26 by fjanoty          ###   ########.fr       */
+/*   Updated: 2016/02/12 09:41:47 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ int				ft_tetrilen(t_tetriminos *begin)
 	i = 0;
 	while (begin)
 	{
-		begin = begin->next;
+		printf("HAHA TU BOUUUUUUCL(tetrilen)\n");
+//		begin = begin->next;
 		i++;
 	}
 	return (i - 1);

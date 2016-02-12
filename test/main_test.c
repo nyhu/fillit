@@ -6,12 +6,13 @@
 /*   By: fjanoty <fjanoty@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/11 03:49:56 by fjanoty           #+#    #+#             */
-/*   Updated: 2016/02/12 02:33:32 by fjanoty          ###   ########.fr       */
+/*   Updated: 2016/02/12 06:02:27 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <unistd.h>
 #include <stdio.h>
-
+/*
 typedef struct	s_tata
 {
 	int i;
@@ -49,5 +50,13 @@ int		main(void)
 //		printf("haha %d %d\n", tab[i][0].i, tab[i][0].j);
 		i++;
 	}
+	return (0);
+}
+*/
+
+int main(void)
+{
+	printf("haha");
+	write(1, "bouh\n", 5);
 	return (0);
 }

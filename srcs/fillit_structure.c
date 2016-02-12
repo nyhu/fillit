@@ -6,7 +6,7 @@
 /*   By: fjanoty <fjanoty@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/05 18:23:53 by fjanoty           #+#    #+#             */
-/*   Updated: 2016/02/08 17:41:21 by tboos            ###   ########.fr       */
+/*   Updated: 2016/02/12 06:27:00 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void			fillit_structure(char *tab, int ret)
 	}
 	glb_ground(SET, ft_create_square());
 	arrow = ft_squ_lunch(arrow, nb - 1);
-	ft_print_result(arrow);
+	ft_print_result(*arrow, nb);
 	free(array);
 	free(arrow);
 	ft_exit(0);

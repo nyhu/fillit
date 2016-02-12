@@ -6,13 +6,13 @@
 /*   By: tboos <toussaint.boos@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/03 18:15:02 by tboos             #+#    #+#             */
-/*   Updated: 2016/02/08 17:14:40 by tboos            ###   ########.fr       */
+/*   Updated: 2016/02/12 09:43:39 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
 
-t_tetriminos	*ft_reorder(t_tetriminos **arrow, int stage, int len)
+t_tetriminos	**ft_reorder(t_tetriminos **arrow, int stage, int len)
 {
 	int				i;
 	int				m;

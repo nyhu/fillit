@@ -1,0 +1,12 @@
+srcs/ft_reorder.c:39:7: error: conflicting types for 'ft_tetriswap'
+int                     ft_tetriswap(t_tetriminos **arrow, int stage, int i)
+                        ^
+includes/header.h:35:9: note: previous declaration is here
+void                            ft_tetriswap(t_tetriminos **arow, int stage, int i);
+                                ^
+1 error generated.
+srcs/ft_tetrilen.c:22:18: error: no member named 'next' in 'struct s_tetriminos'
+                begin = begin->next;
+                        ~~~~~  ^
+1 error generated.
+make: *** [fillit] Error 1

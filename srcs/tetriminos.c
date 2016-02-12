@@ -6,7 +6,7 @@
 /*   By: fjanoty <fjanoty@student.fr>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/27 06:06:49 by fjanoty           #+#    #+#             */
-/*   Updated: 2016/01/27 06:19:26 by fjanoty          ###   ########.fr       */
+/*   Updated: 2016/02/12 05:43:29 by fjanoty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void				tetris_define_type(t_tetriminos *array, int nb)
 		first = 0;
 		if ((array[nb]).type > type_max)
 			type_max = (array[nb]).type;
-		if ((array[nb]).valu = tetris->valu)
+		if ((array[nb]).valu == tetris->valu)
 			break;
 		nb--;
 	}
