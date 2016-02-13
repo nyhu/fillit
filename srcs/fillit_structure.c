@@ -6,7 +6,7 @@
 /*   By: fjanoty <fjanoty@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/05 18:23:53 by fjanoty           #+#    #+#             */
-/*   Updated: 2016/02/13 00:33:13 by tboos            ###   ########.fr       */
+/*   Updated: 2016/02/13 01:12:21 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,15 +65,34 @@ void			fillit_structure(char *tab, int ret)
 	t_tetriminos	*array;
 	t_tetriminos	**arrow;
 	int				nb;
-
+int i;
 	array = NULL;
 	nb = (ret + 1) / 21;
+dprintf(1, "nb = %d\n", nb);
 	array = get_the_pieces(tab, nb, ret, array);
+dprintf(1, "yop1\n");
 	if (!(arrow = (t_tetriminos **)malloc(sizeof(t_tetriminos *) * nb)) 
 		&& my_free(array))
 		ft_exit(1);
-	while (--nb > -1)
-		arrow[nb] = array + (nb * sizeof(t_tetriminos));
+i=0;
+while (i < nb)
+{
+dprintf(1, "i = %d\ntetrid = %d\n", i, (array[i]).id);
+i++;
+}
+	nb = 0;
+	while (nb < (ret + 1) / 21)
+	{
+		arrow[nb] = &(array[nb]);
+		nb++;
+	}
+i=0;
+while (i < nb)
+{
+dprintf(1, "i = %d\ntetrid = %d\n", i, (arrow[i])->id);
+i++;
+}
+dprintf(1, "yop1\n");
 	glb_ground(SET, ft_create_square());
 	arrow = ft_squ_lunch(arrow, nb - 1);
 	ft_print_result(*arrow, nb);

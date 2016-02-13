@@ -6,7 +6,7 @@
 /*   By: fjanoty <fjanoty@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/03 22:03:34 by fjanoty           #+#    #+#             */
-/*   Updated: 2016/02/12 11:33:00 by fjanoty          ###   ########.fr       */
+/*   Updated: 2016/02/13 01:14:36 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void	ft_print_result(t_tetriminos *begin, int size)
 		ft_resting_posx(begin);
 		ft_resting_posy(begin);
 		ft_add_strtetri(begin, pos, result, len);
-		begin++;
+		begin += sizeof(t_tetriminos);
 		i++;
 	}
 	ft_putstr(result);

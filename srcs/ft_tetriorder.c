@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/03 18:14:15 by tboos             #+#    #+#             */
-/*   Updated: 2016/02/13 00:33:11 by tboos            ###   ########.fr       */
+/*   Updated: 2016/02/13 00:40:23 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ t_tetriminos			**ft_tetriorder(t_tetriminos **arrow, int len, int stage)
 	int				readymade;
 	t_tetriminos	**test;
 
-	if (stage == len && ft_push_tetriminos(arrow[stage], glb_sqr_dim(GET, 0)))
+	if (stage == len && ft_push_tetriminos(arrow[stage]))
 		return (arrow);
 	else if (stage == len)
 		return (ft_reorder(arrow, stage, len));
@@ -38,7 +38,7 @@ t_tetriminos			**ft_tetriorder(t_tetriminos **arrow, int len, int stage)
 	readymade = 0;
 	while (i <= len)
 	{
-		if (ft_push_tetriminos(arrow[stage], glb_sqr_dim(GET, 0)))
+		if (ft_push_tetriminos(arrow[stage]))
 		{
 			if ((test = ft_tetriorder(arrow, len, stage + 1)))
 				return (test);
