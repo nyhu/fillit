@@ -6,7 +6,7 @@
 /*   By: fjanoty <fjanoty@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/03 22:03:34 by fjanoty           #+#    #+#             */
-/*   Updated: 2016/02/13 01:14:36 by tboos            ###   ########.fr       */
+/*   Updated: 2016/02/13 07:18:47 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,15 +23,16 @@ char	*ft_init_str_result(int len)
 	i = 0;
 	if (!(result = (char*)malloc(sizeof(char) * (len * (len + 1) + 1))))
 		return (NULL);
-	while (i < len * (len + 1))
+	while (i < (len * (len + 1) + 1))
 	{
-		if (i % (len + 1) == len)
+		if (i % len == len)
 			result[i] = '\n';
 		else
 			result[i] = '.';
 		i++;
 	}
 	result[i] = '\0';
+dprintf(1, "result:\n%s\n", result);
 	return (result);
 }
 
@@ -57,27 +58,25 @@ void	ft_add_strtetri(t_tetriminos *elem, t_coordone *pos, char *str, int len)
 void	ft_print_result(t_tetriminos *begin, int size)
 {
 	t_coordone	*pos;
-	int			len;
+	int			sq;
 	char		*result;
 	int			i;
 
-//print_all_tetris(begin);
-//print_ground(glb_ground(GET, 0));
 	i = 0;
 	pos = create_coordone();
-	len = glb_sqr_dim(GET, 0) - 1;
-	result = ft_init_str_result(len);
+	sq = glb_sqr_dim(GET, 0) - 1;
+	result = ft_init_str_result(sq);
 	while (i < size)
 	{
 		copy_coordone(pos, begin);
 		ft_resting_posx(begin);
 		ft_resting_posy(begin);
-		ft_add_strtetri(begin, pos, result, len);
-		begin += sizeof(t_tetriminos);
+		ft_add_strtetri(begin, pos, result, sq);
+dprintf(1, "avant :\ni = %d\ntetrid = %d\n", i, (begin)->id);
+		begin += 1;
 		i++;
 	}
 	ft_putstr(result);
-//printf("###############################################:	%s\n", result);
 	free(result);
 	free(pos);
 }
