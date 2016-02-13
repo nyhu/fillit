@@ -6,7 +6,7 @@
 /*   By: fjanoty <fjanoty@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/03 22:03:34 by fjanoty           #+#    #+#             */
-/*   Updated: 2016/02/13 07:18:47 by tboos            ###   ########.fr       */
+/*   Updated: 2016/02/13 07:37:23 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,16 +23,16 @@ char	*ft_init_str_result(int len)
 	i = 0;
 	if (!(result = (char*)malloc(sizeof(char) * (len * (len + 1) + 1))))
 		return (NULL);
-	while (i < (len * (len + 1) + 1))
+	while (i < (len * (len + 1)))
 	{
-		if (i % len == len)
+		if (i != 0 && (i + 1) % (len + 1) == 0)
 			result[i] = '\n';
 		else
 			result[i] = '.';
 		i++;
 	}
 	result[i] = '\0';
-dprintf(1, "result:\n%s\n", result);
+dprintf(1, "result:\n%s", result);
 	return (result);
 }
 
@@ -65,6 +65,7 @@ void	ft_print_result(t_tetriminos *begin, int size)
 	i = 0;
 	pos = create_coordone();
 	sq = glb_sqr_dim(GET, 0) - 1;
+dprintf(1, "sq = %d\n", sq);
 	result = ft_init_str_result(sq);
 	while (i < size)
 	{

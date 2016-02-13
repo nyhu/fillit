@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/03 18:14:15 by tboos             #+#    #+#             */
-/*   Updated: 2016/02/13 05:43:17 by tboos            ###   ########.fr       */
+/*   Updated: 2016/02/13 07:25:17 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ t_tetriminos			**ft_squ_lunch(t_tetriminos **arrow, int len)
 	int				i;
 	int				j;
 	int				sq;
+	t_tetriminos	**test;
 
 	i = (len + 1) * 4;
 	j = 1;
@@ -69,8 +70,8 @@ t_tetriminos			**ft_squ_lunch(t_tetriminos **arrow, int len)
 	while (sq < 16)
 	{
 		glb_sqr_dim(SET, sq);
-		if((arrow = ft_tetriorder(arrow, len - 1, 0)))
-			return (arrow);
+		if((test = ft_tetriorder(arrow, len - 1, 0)))
+			return (test);
 		sq++;
 	}
 	return (NULL);
