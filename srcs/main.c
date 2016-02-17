@@ -6,56 +6,80 @@
 /*   By: fjanoty <fjanoty@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/03 22:45:56 by fjanoty           #+#    #+#             */
-/*   Updated: 2016/02/17 19:52:02 by tboos            ###   ########.fr       */
+/*   Updated: 2016/02/17 20:42:21 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
+/*
+   void			ft_recurbit(u_int ligne)
+   {
+   int i;
+   i = 0;
+   while (i < 8)
+   {
+   ft_putchar('0' + (ligne % 2));
+   ligne /= 2;
+   i++;
+   }
+   }
 
-void			ft_recurbit(u_int ligne)
-{
-	int i;
-	i = 0;
-	while (i < 8)
-	{
-		ft_putchar('0' + (ligne % 2));
-		ligne /= 2;
-		i++;
-	}
-}
+   void			ft_printbit(u_int *tetris_tab)
+   {
+   int	i;
+   i = 0;
+   while (i < 4)
+   {
+   ft_putstr("octet\n");
+   ft_recurbit(tetris_tab[i]);
+   ft_putstr("\n");
+   i++;
+   }
+   }
 
-void			ft_printbit(u_int *tetris_tab)
+   static void		ft_print_tetris_tab(u_int **tetris_tab, int nb)
+   {
+   int		i;
+   i = 0;
+   while(i < nb)
+   {
+   ft_putstr("tetris\n");
+   ft_printbit(tetris_tab[i]);
+   ft_putstr("\n");
+   i++;
+   }
+   ft_exit(0);
+   }
+   */
+
+static void		ft_print_result(u_int **tetris_tab, nb)
 {
-	int	i;
-	i = 0;
-	while (i < 4)
-	{
-ft_putstr("octet\n");
-		ft_recurbit(tetris_tab[i]);
-	ft_putstr("\n");
-		i++;
-	}
+	
 }
 
 static void		ft_solve(u_int **tetris_tab, int nb)
 {
-int		i;
-i = 0;
-while(i < nb)
-{
-	ft_putstr("tetris\n");
-	ft_printbit(tetris_tab[i]);
-	ft_putstr("\n");
-	i++;
-}
-ft_exit(0);
+	int				edge;
+	u_int			*map;
+
+	if (!(map = ft_map_init()) || !(edge = ft_find_edge(nb)))
+	{
+		if (map)
+			free(map);
+		ft_free_tetris_tab(tetris_tab, nb);
+		ft_exit(1);
+	}
+	while (!(ft_solve_map(tetris_tab, nb, map, edge)))
+		edge++;
+	free(map);
+	ft_print_result(tetris_tab, nb);
 }
 
 static void		ft_filling(char *tab, int ret)
 {
-	u_int			**tetris_tab;
-	int				nb;
-	int				i;
+	u_int	**tetris_tab;
+	int		nb;
+	int		i;
 
 	nb = (ret + 1) / 21;
 	i = 0;

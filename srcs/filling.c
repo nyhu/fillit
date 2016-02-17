@@ -6,11 +6,23 @@
 /*   By: fjanoty <fjanoty@student.fr>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/27 07:38:47 by fjanoty           #+#    #+#             */
-/*   Updated: 2016/02/17 19:51:56 by tboos            ###   ########.fr       */
+/*   Updated: 2016/02/17 20:25:47 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
+
+int				ft_check_interbackn(char *tab, int ret)
+{
+	int		i;
+
+	i = 20;
+	while (i < ret && tab[i] == '\n')
+		i += 21;
+	if (i < ret)
+		return (0);
+	return (1);
+}
 
 static int			first_diese(char *str)
 {
