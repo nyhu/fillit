@@ -6,7 +6,7 @@
 /*   By: fjanoty <fjanoty@student.fr>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/27 07:38:47 by fjanoty           #+#    #+#             */
-/*   Updated: 2016/02/17 18:52:46 by tboos            ###   ########.fr       */
+/*   Updated: 2016/02/17 19:30:27 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static void			search_the_diese(char *piece, u_int *tetris,
 		if (i + 5 < 20)
 			search_the_diese(piece, tetris, diese, i + 5);
 	}
-	else if (piece[i] != '.' || piece[i] != '\n')
+	else if (piece[i] != '.' && piece[i] != '\n')
 		*diese = 5;
 }
 

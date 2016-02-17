@@ -21,7 +21,7 @@ all: $(NAME)
 lib:
 	cd libft ; make ; mv libft.a ../.
 
-$(NAME): $(OBJ) lib
+$(NAME): lib
 	gcc $(FLAGS) $(SRC) -I includes libft.a -o $(NAME)
 
 clean:

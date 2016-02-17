@@ -6,7 +6,7 @@
 /*   By: fjanoty <fjanoty@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/03 22:45:56 by fjanoty           #+#    #+#             */
-/*   Updated: 2016/02/17 18:55:36 by tboos            ###   ########.fr       */
+/*   Updated: 2016/02/17 19:32:56 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,9 @@ void			ft_printbit(u_int *tetris_tab)
 	i = 0;
 	while (i < 4)
 	{
+ft_putstr("octet\n");
 		ft_recurbit(tetris_tab[i]);
+	ft_putstr("\n");
 		i++;
 	}
 }
@@ -41,9 +43,12 @@ int		i;
 i = 0;
 while(i < nb)
 {
+	ft_putstr("tetris\n");
 	ft_printbit(tetris_tab[i]);
+	ft_putstr("\n");
 	i++;
 }
+ft_exit(0);
 }
 
 static void		ft_filling(char *tab, int ret)
