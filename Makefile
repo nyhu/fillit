@@ -9,19 +9,19 @@
 #   Updated: 2015/11/05 00:11:36 by tboos            ###   ########.fr       #
 #                                                                            #
 # ************************************************************************** #
-#NOTE: -l DIR pour inclure un dossier contenant des headers!
-.PHONY: clean fclean re 
 NAME = fillit
 FLAGS = -Wall -Wextra -Werror
 S =		error.c\
 		filling.c\
 		main.c\
 		tetriminos.c
-
 SRC = $(addprefix srcs/,$(S))
 all: $(NAME)
 
-$(NAME): $(OBJ)
+lib:
+	cd libft ; make
+
+$(NAME): $(OBJ) lib
 	gcc $(FLAGS) $(SRC) -I includes libft.a -o $(NAME)
 
 clean:
@@ -31,3 +31,5 @@ fclean: clean
 	rm -f $(NAME) 
 
 re: fclean $(NAME)
+
+.PHONY: clean fclean re 
