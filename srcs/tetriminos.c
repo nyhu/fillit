@@ -6,7 +6,7 @@
 /*   By: fjanoty <fjanoty@student.fr>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/27 06:06:49 by fjanoty           #+#    #+#             */
-/*   Updated: 2016/02/17 19:24:02 by tboos            ###   ########.fr       */
+/*   Updated: 2016/02/17 19:51:13 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,4 +56,29 @@ void			ft_free_tetris_tab(u_int **tetris_tab, int nb)
 		nb--;
 	}
 	free(tetris_tab);
+}
+
+void			ft_tetris_fall(u_int *tetris)
+{
+	while (!(*tetris))
+	{
+		tetris[0] = tetris[1];
+		tetris[1] = tetris[2];
+		tetris[2] = tetris[3];
+	}
+}
+
+void			ft_tetris_reset(u_int *tetris)
+{
+	int		i;
+
+	while (!(tetris[0] & 1) && !(tetris[1] & 1) && !(tetris[2] & 1))
+	{
+		i = 0;
+		while (i < 4)
+		{
+			tetris[i] = tetris[i] >> 1;
+			i++;
+		}
+	}
 }

@@ -6,7 +6,7 @@
 /*   By: fjanoty <fjanoty@student.fr>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/27 07:38:47 by fjanoty           #+#    #+#             */
-/*   Updated: 2016/02/17 19:30:27 by tboos            ###   ########.fr       */
+/*   Updated: 2016/02/17 19:51:56 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,5 +76,7 @@ int					get_next_piece(char *tab, u_int *tetris)
 	search_the_diese(tab, tetris, &diese, first);
 	if (diese != 4 || style_alive(tab))
 		return (0);
+	ft_tetris_fall(tetris);
+	ft_tetris_reset(tetris);
 	return (1);
 }
