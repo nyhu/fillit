@@ -6,16 +6,18 @@
 /*   By: fjanoty <fjanoty@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/05 18:23:53 by fjanoty           #+#    #+#             */
-/*   Updated: 2016/02/17 18:04:14 by tboos            ###   ########.fr       */
+/*   Updated: 2016/02/17 18:53:44 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef HEADER_H
 # define HEADER_H
 
-# define BUF 546
+# include <fcntl.h>
 # include <stdlib.h>
 # include <stdio.h>
+# include "libft.h"
+# define BUF 546
 
 typedef unsigned int u_int;
 void			ft_exit(int mode);

@@ -19,13 +19,13 @@ SRC = $(addprefix srcs/,$(S))
 all: $(NAME)
 
 lib:
-	cd libft ; make
+	cd libft ; make ; mv libft.a ../.
 
 $(NAME): $(OBJ) lib
 	gcc $(FLAGS) $(SRC) -I includes libft.a -o $(NAME)
 
 clean:
-	rm -f nothing
+	rm -f libft.a
 
 fclean: clean
 	rm -f $(NAME) 

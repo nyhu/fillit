@@ -6,7 +6,7 @@
 /*   By: fjanoty <fjanoty@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/03 22:45:56 by fjanoty           #+#    #+#             */
-/*   Updated: 2016/02/17 18:04:11 by tboos            ###   ########.fr       */
+/*   Updated: 2016/02/17 18:55:36 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static void		ft_filling(char *tab, int ret)
 	{
 		while (i < nb)
 		{
-			if (!(get_next_piece(str + (i * 21), tetri_tab + i)))
+			if (!(get_next_piece(tab + (i * 21), *(tetris_tab + i))))
 				nb = 0;
 			i++;
 		}
@@ -94,7 +94,7 @@ int				main(int ac, char **av)
 	if (ac == 2)
 		if ((fd = open(av[1], O_RDONLY, S_IREAD)) > 0)
 			ft_read(fd);
-	else if (ac = 1)
+	if (ac == 1)
 	{
 		ft_putstr_fd("usage: fillit missing_input_file\n", 1);
 		ft_exit(0);

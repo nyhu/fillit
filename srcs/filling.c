@@ -6,7 +6,7 @@
 /*   By: fjanoty <fjanoty@student.fr>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/27 07:38:47 by fjanoty           #+#    #+#             */
-/*   Updated: 2016/02/17 18:04:21 by tboos            ###   ########.fr       */
+/*   Updated: 2016/02/17 18:52:46 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static int			first_diese(char *str)
 	return (-1);
 }
 
-static void			search_the_diese(char *diese, u_int *tetris,
+static void			search_the_diese(char *piece, u_int *tetris,
 					int *diese, int i)
 {
 	if (piece[i] == '#')
@@ -38,7 +38,6 @@ static void			search_the_diese(char *diese, u_int *tetris,
 		piece[i] = '.';
 		tetris[i / 5] += 1 << (i % 5);
 		*diese += 1;
-		actual_mini_maxi(tetris, i);
 		if (i - 1 >= 0)
 			search_the_diese(piece, tetris, diese, i - 1);
 		if (i + 1 < 20)
@@ -67,15 +66,15 @@ static int			style_alive(char *str)
 
 int					get_next_piece(char *tab, u_int *tetris)
 {
-	int		dieses;
+	int		diese;
 	int		first;
 
-	dieses = 0;
+	diese = 0;
 	first = 0;
 	if ((first = first_diese(tab)) < 0)
 		return (0);
-	search_the_diese(tab, tetris, &dieses, first);
-	if (dieses != 4 || style_alive(tab))
+	search_the_diese(tab, tetris, &diese, first);
+	if (diese != 4 || style_alive(tab))
 		return (0);
 	return (1);
 }
