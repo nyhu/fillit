@@ -6,58 +6,94 @@
 /*   By: fjanoty <fjanoty@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/03 22:45:56 by fjanoty           #+#    #+#             */
-/*   Updated: 2016/02/17 16:29:32 by tboos            ###   ########.fr       */
+/*   Updated: 2016/02/17 18:04:11 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
 
-static void	fillit_structure(char *tab, int ret)
+void			ft_recurbit(u_int ligne)
 {
-	int				**tetris_tab;
-	int				**map;
+	int i;
+	i = 0;
+	while (i < 8)
+	{
+		ft_putchar('0' + (ligne % 2));
+		ligne /= 2;
+		i++;
+	}
+}
+
+void			ft_printbit(u_int *tetris_tab)
+{
+	int	i;
+	i = 0;
+	while (i < 4)
+	{
+		ft_recurbit(tetris_tab[i]);
+		i++;
+	}
+}
+
+static void		ft_solve(u_int **tetris_tab, int nb)
+{
+int		i;
+i = 0;
+while(i < nb)
+{
+	ft_printbit(tetris_tab[i]);
+	i++;
+}
+}
+
+static void		ft_filling(char *tab, int ret)
+{
+	u_int			**tetris_tab;
 	int				nb;
 	int				i;
 
 	nb = (ret + 1) / 21;
+	i = 0;
 	if (!(tetris_tab = ft_init_tetris_tab(nb)))
 		ft_exit(1);
-	if (!(tetris_tab = ft_filling_tetris(tab, ret, nb, tetri_tab)))
-		ft_exit(1);
-	glb_ground(SET, ft_init_ground(&ground));
-	tetri_tab = ft_squ_lunch(tetri_tab, nb);
-	ft_print_result(tetri_tab, nb);
-	ft_exit(0);
+	if ((ft_check_interbackn(tab, ret)))
+	{
+		while (i < nb)
+		{
+			if (!(get_next_piece(str + (i * 21), tetri_tab + i)))
+				nb = 0;
+			i++;
+		}
+		if (nb)
+			ft_solve(tetris_tab, nb);
+	}
+	ft_free_tetris_tab(tetris_tab, (ret + 1) / 21);
+	ft_exit(1);
 }
 
-static void	ft_read(fd)
+static void		ft_read(fd)
 {
 	int		ret;
 	char	buf[BUF];
 
 	if ((ret = read(fd, buf, BUF)))
-	{
 		if ((ret + 1) % 21 == 0)
 		{
 			buf[ret] = '\0';
 			close(fd);
-			fillit_structure(buf, ret);
+			ft_filling(buf, ret);
 		}
-	}
+	close(fd);
+	ft_exit(1);
 }
 
-int			main(int ac, char **av)
+int				main(int ac, char **av)
 {
 	int		fd;
 
 	if (ac == 2)
-	{
 		if ((fd = open(av[1], O_RDONLY, S_IREAD)) > 0)
-		{
 			ft_read(fd);
-			close(fd);
-		}	
-	}
 	else if (ac = 1)
 	{
 		ft_putstr_fd("usage: fillit missing_input_file\n", 1);

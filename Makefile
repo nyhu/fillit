@@ -13,19 +13,9 @@
 .PHONY: clean fclean re 
 NAME = fillit
 FLAGS = -Wall -Wextra -Werror
-S =		add_rm_tetri.c\
-		coordone.c\
-		debug.c\
-		error.c\
+S =		error.c\
 		filling.c\
-		fillit_structure.c\
-		ft_reorder.c\
-		ft_tetriorder.c\
-		glb.c\
 		main.c\
-		manip_bin.c\
-		print.c\
-		square_result.c\
 		tetriminos.c
 
 SRC = $(addprefix srcs/,$(S))
