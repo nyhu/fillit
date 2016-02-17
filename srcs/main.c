@@ -6,7 +6,7 @@
 /*   By: fjanoty <fjanoty@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/03 22:45:56 by fjanoty           #+#    #+#             */
-/*   Updated: 2016/02/11 03:47:11 by fjanoty          ###   ########.fr       */
+/*   Updated: 2016/02/17 14:02:20 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,6 @@ int		main(int ac, char **av)
 		}	
 	}
 	else
-		ft_putstr_fd("usage: fillit tetriminos_file\n", 1);
+		ft_putstr_fd("usage: fillit missing_input_file\n", 1);
 	return (0);
 }
