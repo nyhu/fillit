@@ -6,7 +6,7 @@
 /*   By: fjanoty <fjanoty@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/05 18:23:53 by fjanoty           #+#    #+#             */
-/*   Updated: 2016/02/17 14:02:32 by tboos            ###   ########.fr       */
+/*   Updated: 2016/02/17 16:29:33 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,20 +46,4 @@ void	ft_filling_tetris(char *tab, int ret, int nb, t_tetriminos *tetri_tab)
 		finished_tetriminos(tetri_tab + i);
 		i++;
 	}
-}
-
-void			fillit_structure(char *tab, int ret)
-{
-	t_tetriminos	tetri_tab[26];
-	int				nb;
-	int				i;
-	t_sqare			ground;
-
-	nb = (ret + 1) / 21;
-	ft_init_tetri_tab(tetri_tab, nb);
-	ft_filling_tetris(tab, ret, nb, tetri_tab);
-	glb_ground(SET, ft_init_ground(&ground));
-	tetri_tab = ft_squ_lunch(tetri_tab, nb);
-	ft_print_result(tetri_tab, nb);
-	ft_exit(0);
 }
