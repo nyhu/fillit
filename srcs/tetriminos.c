@@ -6,7 +6,7 @@
 /*   By: fjanoty <fjanoty@student.fr>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/27 06:06:49 by fjanoty           #+#    #+#             */
-/*   Updated: 2016/02/17 20:42:24 by tboos            ###   ########.fr       */
+/*   Updated: 2016/02/17 21:45:56 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,9 @@ u_int					**ft_init_tetris_tab(int nb)
 {
 	u_int	**tetris_tab;
 
-	if (!(tetris_tab = (u_int **)malloc(sizeof(u_int *) * nb)))
+	if (!(tetris_tab = (u_int **)malloc(sizeof(u_int *) * (nb + 1))))
 		ft_exit(1);
+	tetris_tab[nb] = NULL;
 	nb--;
 	while (nb > -1)
 	{
@@ -60,4 +61,31 @@ void			ft_tetris_reset(u_int *tetris)
 			i++;
 		}
 	}
+}
+
+int				ft_tetris_match_map
+
+int				ft_tetris_slide(u_int *tetris, int edge, int *x, int *y)
+{
+	if (*x < edge)
+	{
+		tetris[0] = tetris[0] << 1;
+		tetris[1] = tetris[1] << 1;
+		tetris[2] = tetris[2] << 1;
+		tetris[3] = tetris[3] << 1;
+	}
+	else if (*x >= edge)
+	{
+		tetris[0] = tetris[0] >> *x;
+		tetris[1] = tetris[1] >> *x;
+		tetris[2] = tetris[2] >> *x;
+		tetris[3] = tetris[3] >> *x;
+		(*y)++;
+	}
+	if (*y > edge)
+	{
+		*y = 0;
+		return (0);
+	}
+	return (1);
 }

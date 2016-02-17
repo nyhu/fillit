@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fjanoty <fjanoty@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/11/03 22:45:56 by fjanoty           #+#    #+#             */
-/*   Updated: 2016/02/17 20:42:21 by tboos            ###   ########.fr       */
+/*   Created: 2016/02/17 20:55:56 by tboos             #+#    #+#             */
+/*   Updated: 2016/02/17 21:45:59 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,12 @@ static void		ft_solve(u_int **tetris_tab, int nb)
 		ft_free_tetris_tab(tetris_tab, nb);
 		ft_exit(1);
 	}
-	while (!(ft_solve_map(tetris_tab, nb, map, edge)))
+	ft_map_mask(map, edge, 0);
+	while (!(ft_solve_map(tetris_tab, map, edge, 0)))
+	{
 		edge++;
+		ft_map_mask(map, edge, 1);
+	}
 	free(map);
 	ft_print_result(tetris_tab, nb);
 }
