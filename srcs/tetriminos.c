@@ -63,7 +63,14 @@ void			ft_tetris_reset(u_int *tetris)
 	}
 }
 
-int				ft_tetris_match_map
+void			ft_set_tetris(u_int *tetris, u_int *map, int y)
+{
+	map[y] ^= tetris[i];
+	map[y + 1] ^= tetris[i + 1];
+	map[y + 2] ^= tetris[i + 2];
+	map[y + 3] ^= tetris[i + 3];
+	tetris[4] = y;
+}
 
 int				ft_tetris_slide(u_int *tetris, int edge, int *x, int *y)
 {
@@ -73,6 +80,7 @@ int				ft_tetris_slide(u_int *tetris, int edge, int *x, int *y)
 		tetris[1] = tetris[1] << 1;
 		tetris[2] = tetris[2] << 1;
 		tetris[3] = tetris[3] << 1;
+		(*x)++;
 	}
 	else if (*x >= edge)
 	{
@@ -80,12 +88,13 @@ int				ft_tetris_slide(u_int *tetris, int edge, int *x, int *y)
 		tetris[1] = tetris[1] >> *x;
 		tetris[2] = tetris[2] >> *x;
 		tetris[3] = tetris[3] >> *x;
+		(*x) = 0;
 		(*y)++;
-	}
-	if (*y > edge)
-	{
-		*y = 0;
-		return (0);
+		if (*y >= edge)
+		{
+			tetris[4] = 0;
+			return (0);
+		}
 	}
 	return (1);
 }

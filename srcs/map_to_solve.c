@@ -64,7 +64,7 @@ void		ft_map_mask(int *map, int edge, int mode)
 		}
 		map[edge] = MAX;
 		mode++;
-		while (mode < 31)
+		while (mode < 16)
 		{
 			map[mode] = MAX;
 			mode++;
@@ -81,5 +81,19 @@ int			ft_solve_map(u_int **tetris_tab, u_int *map, int edge, int stage)
 		return (1);
 	x = 0;
 	y = 0;
-	while (tetris_tab[stage] & map[x])
+	while (tetris_tab[stage][0] & map[y] || tetris_tab[stage][1] & map[y + 1]
+		|| tetris_tab[stage][2] & map[y + 2] || tetris_tab[stage][3] & map[y + 3])
+		if (!(ft_tetris_slide(tetris[stage], edge, &x, &y)))
+			return (0);
+	ft_set_tetris(tetris_tab[stage], map, y);
+	while (!(ft_solve_map(tetris_tab, map, edge, stage + 1)))
+	{
+		ft_set_tetris(tetris[stage], map, y);
+		while (tetris_tab[stage][0] & map[y] || tetris_tab[stage][1] & map[y + 1]
+			|| tetris_tab[stage][2] & map[y + 2] || tetris_tab[stage][3] & map[y + 3])
+			if (!(ft_tetris_slide(tetris[stage], edge, &x, &y)))
+				return (0);
+		ft_set_tetris(tetris[stage], map, y);
+	}
+	return (1);
 }
