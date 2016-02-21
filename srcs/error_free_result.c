@@ -48,7 +48,7 @@ void			ft_fill_result(u_int **tetris_tab, char *result, int edge)
 			k = -1;
 			while (++k < 4)
 			{
-				y = (tetris[i][4] + k) * (edge + 1) - 1;
+				y = (tetris_tab[i][4] + k) * (edge + 1) - 1;
 				if (tetris_tab[i][k] & mask)
 					result[y + j] = '#';
 			}
@@ -57,13 +57,13 @@ void			ft_fill_result(u_int **tetris_tab, char *result, int edge)
 	}
 }
 
-char			ft_init_result(int edge)
+char			*ft_init_result(int edge)
 {
 	char	*result;
 	int		i;
 
 	if (!(result = (char *)malloc(sizeof(char) * ((edge + 1) * edge + 1))))
-		return(NULL);
+		return (NULL);
 	i = 0;
 	while (i < ((edge + 1) * edge))
 	{

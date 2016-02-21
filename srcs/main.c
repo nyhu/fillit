@@ -55,9 +55,8 @@
 static void		ft_print_result(u_int **tetris_tab, int nb, int edge)
 {
 	char			*result;
-	int				i;
 
-	if (!(ft_init_result(edge)))
+	if (!(result = ft_init_result(edge)))
 	{
 		ft_free_tetris_tab(tetris_tab, nb);
 		ft_exit(1);
@@ -116,7 +115,7 @@ static void		ft_filling(char *tab, int ret)
 	ft_exit(1);
 }
 
-static void		ft_read(fd)
+static void		ft_read(int fd)
 {
 	int		ret;
 	char	buf[BUF];

@@ -65,10 +65,10 @@ void			ft_tetris_reset(u_int *tetris)
 
 void			ft_set_tetris(u_int *tetris, u_int *map, int y)
 {
-	map[y] ^= tetris[i];
-	map[y + 1] ^= tetris[i + 1];
-	map[y + 2] ^= tetris[i + 2];
-	map[y + 3] ^= tetris[i + 3];
+	map[y] ^= tetris[0];
+	map[y + 1] ^= tetris[1];
+	map[y + 2] ^= tetris[2];
+	map[y + 3] ^= tetris[3];
 	tetris[4] = y;
 }
 
