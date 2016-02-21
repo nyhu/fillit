@@ -52,9 +52,21 @@
    }
    */
 
-static void		ft_print_result(u_int **tetris_tab, nb)
+static void		ft_print_result(u_int **tetris_tab, int nb, int edge)
 {
-	
+	char			*result;
+	int				i;
+
+	if (!(ft_init_result(edge)))
+	{
+		ft_free_tetris_tab(tetris_tab, nb);
+		ft_exit(1);
+	}
+	ft_fill_result(tetris_tab, result, edge);
+	ft_putstr(result);
+	ft_free_tetris_tab(tetris_tab, nb);
+	free(result);
+	exit(0);
 }
 
 static void		ft_solve(u_int **tetris_tab, int nb)
@@ -76,7 +88,7 @@ static void		ft_solve(u_int **tetris_tab, int nb)
 		ft_map_mask(map, edge, 1);
 	}
 	free(map);
-	ft_print_result(tetris_tab, nb);
+	ft_print_result(tetris_tab, nb, edge);
 }
 
 static void		ft_filling(char *tab, int ret)

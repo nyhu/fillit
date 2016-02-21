@@ -21,6 +21,8 @@
 # define MAX 0xffffffff
 
 typedef unsigned int u_int;
+void			ft_fill_result(u_int **tetris_tab, char *result, int edge);
+char			ft_init_result(int edge);
 void			ft_map_mask(int *map, int edge, int mode);
 void			ft_tetris_slide(u_int *tetris, int edge, int x, int y);
 void			ft_tetris_reset(u_int *tetris);
