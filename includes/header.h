@@ -13,6 +13,7 @@
 #ifndef HEADER_H
 # define HEADER_H
 
+# include <stdio.h>
 # include <fcntl.h>
 # include <sys/types.h>
 # include <sys/stat.h>
@@ -32,7 +33,7 @@ int				ft_tetris_slide(u_int *tetris, int edge, int *x, int *y);
 void			ft_tetris_reset(u_int *tetris);
 void			ft_tetris_fall(u_int *tetris);
 void			ft_exit(int mode);
-void			ft_free_tetris_tab(u_int **tetris_tab, int nb);
+void			ft_free_tetris_tab(u_int **tetris_tab);
 int				get_next_piece(char *tab, u_int *tetris);
 int				ft_check_interbackn(char *tab, int ret);
 u_int			**ft_init_tetris_tab(int nb);

@@ -19,13 +19,15 @@ void			ft_exit(int mode)
 	exit(0);
 }
 
-void			ft_free_tetris_tab(u_int **tetris_tab, int nb)
+void			ft_free_tetris_tab(u_int **tetris_tab)
 {
-	nb--;
-	while (nb >= 0)
+	int		i;
+
+	i = 0;
+	while (tetris_tab[i])
 	{
-		free(tetris_tab[nb]);
-		nb--;
+		free(tetris_tab[i]);
+		i++;
 	}
 	free(tetris_tab);
 }
@@ -48,9 +50,9 @@ void			ft_fill_result(u_int **tetris_tab, char *result, int edge)
 			k = -1;
 			while (++k < 4)
 			{
-				y = (tetris_tab[i][4] + k) * (edge + 1) - 1;
+				y = (tetris_tab[i][4] + k) * (edge + 1);
 				if (tetris_tab[i][k] & mask)
-					result[y + j] = '#';
+					result[y + j] = 'A' + i;
 			}
 			mask = mask << 1;
 		}
@@ -59,11 +61,9 @@ void			ft_fill_result(u_int **tetris_tab, char *result, int edge)
 
 char			*ft_init_result(int edge)
 {
-	char	*result;
+	static char	result[290];
 	int		i;
 
-	if (!(result = (char *)malloc(sizeof(char) * ((edge + 1) * edge + 1))))
-		return (NULL);
 	i = 0;
 	while (i < ((edge + 1) * edge))
 	{
@@ -71,6 +71,8 @@ char			*ft_init_result(int edge)
 			result[i] = '\n';
 		else
 			result[i] = '.';
+		i++;
 	}
+	result[i] = '\0';
 	return (result);
 }

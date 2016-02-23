@@ -18,20 +18,14 @@ u_int					**ft_init_tetris_tab(int nb)
 
 	if (!(tetris_tab = (u_int **)malloc(sizeof(u_int *) * (nb + 1))))
 		ft_exit(1);
-	tetris_tab[nb] = NULL;
-	nb--;
+	tetris_tab[nb--] = NULL;
 	while (nb > -1)
 	{
-		if (!(tetris_tab[nb] = (u_int *)malloc(sizeof(u_int) * 5)))
+		if (!(tetris_tab[nb] = (u_int *)ft_memalloc(sizeof(u_int) * 5)))
 		{
 			free(tetris_tab);
 			ft_exit(1);
 		}
-		tetris_tab[nb][0] = 0;
-		tetris_tab[nb][1] = 0;
-		tetris_tab[nb][2] = 0;
-		tetris_tab[nb][3] = 0;
-		tetris_tab[nb][4] = 0;
 		nb--;
 	}
 	return (tetris_tab);

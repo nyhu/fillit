@@ -11,60 +11,19 @@
 /* ************************************************************************** */
 
 #include "header.h"
-/*
-   void			ft_recurbit(u_int ligne)
-   {
-   int i;
-   i = 0;
-   while (i < 8)
-   {
-   ft_putchar('0' + (ligne % 2));
-   ligne /= 2;
-   i++;
-   }
-   }
 
-   void			ft_printbit(u_int *tetris_tab)
-   {
-   int	i;
-   i = 0;
-   while (i < 4)
-   {
-   ft_putstr("octet\n");
-   ft_recurbit(tetris_tab[i]);
-   ft_putstr("\n");
-   i++;
-   }
-   }
-
-   static void		ft_print_tetris_tab(u_int **tetris_tab, int nb)
-   {
-   int		i;
-   i = 0;
-   while(i < nb)
-   {
-   ft_putstr("tetris\n");
-   ft_printbit(tetris_tab[i]);
-   ft_putstr("\n");
-   i++;
-   }
-   ft_exit(0);
-   }
-   */
-
-static void		ft_print_result(u_int **tetris_tab, int nb, int edge)
+static void		ft_print_result(u_int **tetris_tab, int edge)
 {
 	char			*result;
 
 	if (!(result = ft_init_result(edge)))
 	{
-		ft_free_tetris_tab(tetris_tab, nb);
+		ft_free_tetris_tab(tetris_tab);
 		ft_exit(1);
 	}
 	ft_fill_result(tetris_tab, result, edge);
 	ft_putstr(result);
-	ft_free_tetris_tab(tetris_tab, nb);
-	free(result);
+	ft_free_tetris_tab(tetris_tab);
 	exit(0);
 }
 
@@ -77,17 +36,18 @@ static void		ft_solve(u_int **tetris_tab, int nb)
 	{
 		if (map)
 			free(map);
-		ft_free_tetris_tab(tetris_tab, nb);
+		ft_free_tetris_tab(tetris_tab);
 		ft_exit(1);
 	}
 	ft_map_mask(map, edge, 0);
 	while (!(ft_solve_map(tetris_tab, map, edge, 0)))
 	{
+dprintf(1, "%d\n", edge);
 		edge++;
 		ft_map_mask(map, edge, 1);
 	}
 	free(map);
-	ft_print_result(tetris_tab, nb, edge);
+	ft_print_result(tetris_tab, edge);
 }
 
 static void		ft_filling(char *tab, int ret)
@@ -111,7 +71,7 @@ static void		ft_filling(char *tab, int ret)
 		if (nb)
 			ft_solve(tetris_tab, nb);
 	}
-	ft_free_tetris_tab(tetris_tab, (ret + 1) / 21);
+	ft_free_tetris_tab(tetris_tab);
 	ft_exit(1);
 }
 

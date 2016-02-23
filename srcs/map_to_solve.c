@@ -89,6 +89,8 @@ int			ft_solve_map(u_int **tetris_tab, u_int *map, int edge, int stage)
 	while (!(ft_solve_map(tetris_tab, map, edge, stage + 1)))
 	{
 		ft_set_tetris(tetris_tab[stage], map, y);
+		if (!(ft_tetris_slide(tetris_tab[stage], edge, &x, &y)))
+			return (0);
 		while (tetris_tab[stage][0] & map[y] || tetris_tab[stage][1] & map[y + 1]
 			|| tetris_tab[stage][2] & map[y + 2] || tetris_tab[stage][3] & map[y + 3])
 			if (!(ft_tetris_slide(tetris_tab[stage], edge, &x, &y)))
