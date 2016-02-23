@@ -75,11 +75,12 @@ void		ft_map_mask(u_int *map, int edge, int mode)
 	if (mode)
 	{
 		mode = 0;
-		while (mode < edge)
+		while (mode < edge - 1)
 		{
 			map[mode] = map[mode] << 1;
 			mode++;
 		}
+		map[mode] = map[mode] << edge;
 	}
 	if (!mode)
 	{
