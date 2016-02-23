@@ -12,6 +12,30 @@
 
 #include "header.h"
 
+int				ft_check_type(u_int **tetris_tab, int stage, int *x)
+{
+	int		i;
+
+	i = stage;
+	while (i--)
+		if (tetris_tab[i][5] == tetris_tab[stage][5])
+		{
+			while (tetris_tab[i][0] ^ tetris_tab[stage][0]
+				|| tetris_tab[i][1] ^ tetris_tab[stage][1]
+				|| tetris_tab[i][2] ^ tetris_tab[stage][2]
+				|| tetris_tab[i][3] ^ tetris_tab[stage][3])
+			{
+				tetris_tab[stage][0] = tetris_tab[stage][0] << 1;
+				tetris_tab[stage][1] = tetris_tab[stage][1] << 1;
+				tetris_tab[stage][2] = tetris_tab[stage][2] << 1;
+				tetris_tab[stage][3] = tetris_tab[stage][3] << 1;
+				(*x)++;
+			}
+			return (tetris_tab[i][4]);
+		}
+	return (0);
+}
+
 void			ft_exit(int mode)
 {
 	if (mode)

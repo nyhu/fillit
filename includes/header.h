@@ -13,6 +13,7 @@
 #ifndef HEADER_H
 # define HEADER_H
 
+# include <stdio.h>
 # include <fcntl.h>
 # include <sys/types.h>
 # include <sys/stat.h>
@@ -21,6 +22,10 @@
 # include "libft.h"
 # define BUF 546
 # define MAX 0xffffffff
+# define CMP_L1 (tetris_tab[stage][0] & map[y])
+# define CMP_L2 (tetris_tab[stage][1] & map[y + 1])
+# define CMP_L3 (tetris_tab[stage][2] & map[y + 2])
+# define CMP_L4 (tetris_tab[stage][3] & map[y + 3])
 
 typedef unsigned int u_int;
 u_int			*ft_map_init(void);
@@ -38,4 +43,6 @@ int				ft_check_interbackn(char *tab, int ret);
 u_int			**ft_init_tetris_tab(int nb);
 int				ft_find_edge(int nb);
 void			ft_set_tetris(u_int *tetris, u_int *map, int y);
+int				ft_check_type(u_int **tetris_tab, int stage, int *x);
+void			ft_tetris_def_type(u_int **tetris_tab);
 #endif

@@ -21,7 +21,7 @@ u_int					**ft_init_tetris_tab(int nb)
 	tetris_tab[nb--] = NULL;
 	while (nb > -1)
 	{
-		if (!(tetris_tab[nb] = (u_int *)ft_memalloc(sizeof(u_int) * 5)))
+		if (!(tetris_tab[nb] = (u_int *)ft_memalloc(sizeof(u_int) * 6)))
 		{
 			free(tetris_tab);
 			ft_exit(1);

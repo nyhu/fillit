@@ -32,6 +32,7 @@ static void		ft_solve(u_int **tetris_tab, int nb)
 	int				edge;
 	u_int			*map;
 
+	ft_tetris_def_type(tetris_tab);
 	if (!(map = ft_map_init()) || !(edge = ft_find_edge(nb)))
 	{
 		if (map)
@@ -42,6 +43,7 @@ static void		ft_solve(u_int **tetris_tab, int nb)
 	ft_map_mask(map, edge, 0);
 	while (!(ft_solve_map(tetris_tab, map, edge, 0)))
 	{
+dprintf(1, "edge : %d\n", edge);
 		edge++;
 		ft_map_mask(map, edge, 1);
 	}
