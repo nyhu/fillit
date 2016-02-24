@@ -11,13 +11,13 @@
 # ************************************************************************** #
 NAME = fillit
 FLAGS = -Wall -Wextra -Werror
-S =		error_free_result.c filling.c main.c map_to_solve.c tetriminos.c
+S = error_free_result.c filling.c main.c map_to_solve.c tetriminos.c
 SRC = $(addprefix srcs/,$(S))
 
 all: $(NAME)
 
 lib:
-	cd libft ; make ; mv libft.a ../.
+	cd libft ; make ; make clean ; mv libft.a ../.
 
 $(NAME): lib
 	gcc $(FLAGS) $(SRC) -I includes libft.a -o $(NAME)

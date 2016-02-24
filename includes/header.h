@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/17 20:56:08 by tboos             #+#    #+#             */
-/*   Updated: 2016/02/24 22:59:16 by tboos            ###   ########.fr       */
+/*   Updated: 2016/02/24 23:08:14 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,11 @@
 # define CMP_L2 (tetris_tab[stage][1] & map[y + 1])
 # define CMP_L3 (tetris_tab[stage][2] & map[y + 2])
 # define CMP_L4 (tetris_tab[stage][3] & map[y + 3])
-# define TT tetris_tab
 
 typedef unsigned int	t_int;
 t_int			*ft_map_init(void);
-int				ft_solve_map(t_int **TT, t_int *map, int edge, int stage);
+int				ft_solve_map(t_int **tetris_tab, t_int *map, int edge,
+				int stage);
 void			ft_fill_result(t_int **tetris_tab, char *result, int edge);
 char			*ft_init_result(int edge);
 void			ft_map_mask(t_int *map, int edge, int mode);

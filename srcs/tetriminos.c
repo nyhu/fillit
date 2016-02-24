@@ -6,13 +6,13 @@
 /*   By: fjanoty <fjanoty@student.fr>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/27 06:06:49 by fjanoty           #+#    #+#             */
-/*   Updated: 2016/02/24 23:01:35 by tboos            ###   ########.fr       */
+/*   Updated: 2016/02/24 23:10:11 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
 
-t_int					**ft_init_tetris_tab(int nb)
+t_int			**ft_init_tetris_tab(int nb)
 {
 	t_int	**tetris_tab;
 
