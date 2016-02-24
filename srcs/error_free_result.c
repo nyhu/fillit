@@ -6,13 +6,13 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/17 20:45:01 by tboos             #+#    #+#             */
-/*   Updated: 2016/02/17 20:45:09 by tboos            ###   ########.fr       */
+/*   Updated: 2016/02/24 22:59:46 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
 
-int				ft_check_type(u_int **tetris_tab, int stage, int *x)
+int				ft_check_type(t_int **tetris_tab, int stage, int *x)
 {
 	int		i;
 
@@ -43,7 +43,7 @@ void			ft_exit(int mode)
 	exit(0);
 }
 
-void			ft_free_tetris_tab(u_int **tetris_tab)
+void			ft_free_tetris_tab(t_int **tetris_tab)
 {
 	int		i;
 
@@ -56,7 +56,7 @@ void			ft_free_tetris_tab(u_int **tetris_tab)
 	free(tetris_tab);
 }
 
-void			ft_fill_result(u_int **tetris_tab, char *result, int edge)
+void			ft_fill_result(t_int **tetris_tab, char *result, int edge)
 {
 	int		i;
 	int		j;

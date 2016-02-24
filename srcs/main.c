@@ -6,13 +6,13 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/17 20:55:56 by tboos             #+#    #+#             */
-/*   Updated: 2016/02/17 21:45:59 by tboos            ###   ########.fr       */
+/*   Updated: 2016/02/24 23:00:49 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
 
-static void		ft_print_result(u_int **tetris_tab, int edge)
+static void		ft_print_result(t_int **tetris_tab, int edge)
 {
 	char			*result;
 
@@ -27,16 +27,15 @@ static void		ft_print_result(u_int **tetris_tab, int edge)
 	exit(0);
 }
 
-static void		ft_solve(u_int **tetris_tab, int nb)
+static void		ft_solve(t_int **tetris_tab, int nb)
 {
 	int				edge;
-	u_int			*map;
+	t_int			*map;
 
+	edge = ft_find_edge(nb);
 	ft_tetris_def_type(tetris_tab);
-	if (!(map = ft_map_init()) || !(edge = ft_find_edge(nb)))
+	if (!(map = ft_map_init()))
 	{
-		if (map)
-			free(map);
 		ft_free_tetris_tab(tetris_tab);
 		ft_exit(1);
 	}
@@ -52,7 +51,7 @@ static void		ft_solve(u_int **tetris_tab, int nb)
 
 static void		ft_filling(char *tab, int ret)
 {
-	u_int	**tetris_tab;
+	t_int	**tetris_tab;
 	int		nb;
 	int		i;
 

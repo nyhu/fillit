@@ -6,13 +6,13 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/17 20:43:31 by tboos             #+#    #+#             */
-/*   Updated: 2016/02/17 21:45:57 by tboos            ###   ########.fr       */
+/*   Updated: 2016/02/24 23:01:09 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
 
-void		ft_tetris_def_type(u_int **tetris_tab)
+void		ft_tetris_def_type(t_int **tetris_tab)
 {
 	int				i;
 	int				j;
@@ -54,12 +54,12 @@ int			ft_find_edge(int nb)
 	return (edge);
 }
 
-u_int		*ft_map_init(void)
+t_int		*ft_map_init(void)
 {
-	u_int			*map;
+	t_int			*map;
 	int				i;
 
-	if (!(map = (u_int *)malloc(sizeof(u_int) * 16)))
+	if (!(map = (t_int *)malloc(sizeof(t_int) * 16)))
 		return (NULL);
 	i = 0;
 	while (i < 16)
@@ -70,7 +70,7 @@ u_int		*ft_map_init(void)
 	return (map);
 }
 
-void		ft_map_mask(u_int *map, int edge, int mode)
+void		ft_map_mask(t_int *map, int edge, int mode)
 {
 	if (mode)
 	{
@@ -99,7 +99,7 @@ void		ft_map_mask(u_int *map, int edge, int mode)
 	}
 }
 
-int			ft_solve_map(u_int **tetris_tab, u_int *map, int edge, int stage)
+int			ft_solve_map(t_int **tetris_tab, t_int *map, int edge, int stage)
 {
 	int				x;
 	int				y;
