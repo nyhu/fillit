@@ -17,7 +17,7 @@ SRC = $(addprefix srcs/,$(S))
 all: $(NAME)
 
 lib:
-	cd libft ; make ; make clean ; mv libft.a ../.
+	cd libft ; make ; cp libft.a ../.
 
 $(NAME): lib
 	gcc $(FLAGS) $(SRC) -I includes libft.a -o $(NAME)
